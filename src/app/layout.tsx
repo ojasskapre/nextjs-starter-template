@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import Navbar from './components/Navbar';
+import { AuthProvider } from '@/app/context/AuthContext';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -19,10 +20,14 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <div className="flex flex-col min-h-screen bg-background">
-          <Navbar />
-          <div className="flex flex-grow">
-            <main className="max-w-4xl mx-auto p-4 flex-grow">{children}</main>
-          </div>
+          <AuthProvider>
+            <Navbar />
+            <div className="flex flex-grow">
+              <main className="max-w-4xl mx-auto p-4 flex-grow">
+                {children}
+              </main>
+            </div>
+          </AuthProvider>
           <footer className="bg-primary text-secondary-foreground p-4 text-center">
             <p>&copy; Next.js Starter Template</p>
           </footer>

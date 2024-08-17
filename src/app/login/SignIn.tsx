@@ -3,7 +3,8 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { supabase } from '@/utils/supabase/client';
+import { createClient } from '@/utils/supabase/client';
+import { useRouter } from 'next/navigation';
 
 const schema = z.object({
   email: z.string().email(),
@@ -20,17 +21,24 @@ const SignIn = () => {
     formState: { isSubmitting, errors },
   } = useForm<FormFields>({ resolver: zodResolver(schema) });
 
-  const handleSignIn: SubmitHandler<FormFields> = async (data) => {
-    console.log(data);
+  const router = useRouter();
 
-    // const { error } = await supabase.auth.signInWithPassword({
-    //   email,
-    //   password,
-    // });
-    // if (error)
-    //   setError('root', {
-    //     message: 'Error submitting form',
-    //   });
+  const handleSignIn: SubmitHandler<FormFields> = async (data) => {
+    const { email, password } = data;
+    const supabase = createClient();
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      setError('root', {
+        message: 'Could not authenticate user!',
+      });
+    } else {
+      router.push('/');
+    }
   };
 
   return (

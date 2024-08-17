@@ -1,9 +1,10 @@
 'use client';
 
+import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { supabase } from '@/utils/supabase/client';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { createClient } from '@/utils/supabase/client';
 
 const schema = z.object({
   email: z.string().email(),
@@ -20,14 +21,27 @@ const SignUp = () => {
     formState: { errors, isSubmitting },
   } = useForm<FormFields>({ resolver: zodResolver(schema) });
 
-  const handleSignUp: SubmitHandler<FormFields> = async (data) => {
-    console.log(data);
+  const [isLinkSent, setIsLinkSent] = useState(false);
 
-    // const { error } = await supabase.auth.signUp({ email, password });
-    // if (error)
-    //   setError('root', {
-    //     message: 'Error submitting form',
-    //   });
+  const handleSignUp: SubmitHandler<FormFields> = async (data) => {
+    const { email, password } = data;
+    const supabase = createClient();
+
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: `${origin}/auth/callback`,
+      },
+    });
+
+    if (error) {
+      setError('root', {
+        message: 'Error submitting form',
+      });
+    } else {
+      setIsLinkSent(true);
+    }
   };
 
   return (
@@ -64,6 +78,13 @@ const SignUp = () => {
           <div className="text-error mt-2 text-sm">{errors.root.message}</div>
         )}
       </form>
+
+      {isLinkSent && (
+        <div className="mt-4 text-success text-sm">
+          An activation link has been sent to your email. Please check your
+          inbox to verify your account.
+        </div>
+      )}
     </div>
   );
 };
