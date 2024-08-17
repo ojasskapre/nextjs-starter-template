@@ -22,6 +22,7 @@ const config: Config = {
         'muted-foreground': 'var(--muted-foreground)',
         accent: 'var(--accent)',
         'accent-foreground': 'var(--accent-foreground)',
+        'accent-hover': 'var(-accent-hover)',
         destructive: 'var(--destructive)',
         'destructive-foreground': 'var(--destructive-foreground)',
         border: 'var(--border)',

@@ -15,6 +15,7 @@
   --muted: #3F3F3F; /* Muted dark gray */
   --muted-foreground: #A1A1AA; /* Muted light gray */
   --accent: #3B82F6; /* Blue for accents */
+  --accent-hover: #72a6ff; /* Slightly lighter blue for accent hover */
   --accent-foreground: #FFFFFF; /* White for accent text */
   --destructive: #EF4444; /* Red for destructive actions */
   --destructive-foreground: #FFFFFF; /* White for destructive text */
