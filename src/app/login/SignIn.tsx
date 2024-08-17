@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { createClient } from '@/utils/supabase/client';
 import { useRouter } from 'next/navigation';
+import OAuthButton from '@/app/components/OAuthButton';
 
 const schema = z.object({
   email: z.string().email(),
@@ -41,6 +42,20 @@ const SignIn = () => {
     }
   };
 
+  const handleOAuthSignin = async (
+    provider: 'google' | 'facebook' | 'github'
+  ) => {
+    const supabase = createClient();
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider,
+    });
+    if (error) {
+      setError('root', {
+        message: 'Could not authenticate user!',
+      });
+    }
+  };
+
   return (
     <div className="max-w-md w-full mx-auto p-8 bg-card rounded-lg shadow-lg">
       <h2 className="text-3xl font-bold mb-6 text-foreground">Sign In</h2>
@@ -69,6 +84,11 @@ const SignIn = () => {
         >
           {isSubmitting ? 'Loading...' : 'Sign In'}
         </button>
+        <OAuthButton
+          provider="google"
+          buttonText="Sign In with Google"
+          onClick={() => handleOAuthSignin('google')}
+        />
         {errors.root && (
           <div className="text-error mt-2 text-sm">{errors.root.message}</div>
         )}
