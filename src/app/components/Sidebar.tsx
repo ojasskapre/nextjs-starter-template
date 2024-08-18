@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useAuth } from '@/app/context/AuthContext';
-import { GoSidebarCollapse, GoSidebarExpand } from 'react-icons/go';
+import { FiSidebar } from 'react-icons/fi';
 
 const Sidebar: React.FC = () => {
   const { user } = useAuth();
@@ -19,7 +19,7 @@ const Sidebar: React.FC = () => {
             onClick={() => setIsOpen(true)}
             className="p-2 bg-primary text-white m-2 rounded-md"
           >
-            <GoSidebarExpand className="w-6 h-6" />
+            <FiSidebar className="w-6 h-6" />
           </button>
         </div>
       )}
@@ -33,7 +33,7 @@ const Sidebar: React.FC = () => {
               onClick={() => setIsOpen(false)}
               className="text-white focus:outline-none"
             >
-              <GoSidebarCollapse className="w-6 h-6" />
+              <FiSidebar className="w-6 h-6" />
             </button>
           </div>
           {/* Add contents for sidebar here */}
