@@ -37,6 +37,10 @@ const config: Config = {
         'warning-foreground': 'var(--warning-foreground)',
         info: 'var(--info)',
         'info-foreground': 'var(--info-foreground)',
+        'button-disabled-bg': 'var(--button-disabled-bg)',
+        'button-disabled-foreground': 'var(--button-disabled-foreground)',
+        'button-hover-bg': 'var(--button-disabled-bg)',
+        'button-bg': 'var(--button-bg)',
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

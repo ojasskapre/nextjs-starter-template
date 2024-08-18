@@ -23,9 +23,9 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
   return (
     <>
       <Navbar />
-      <div className="flex flex-grow">
+      <div className="flex flex-grow h-[calc(100vh-128px)]">
         <Sidebar />
-        <main className="max-w-4xl mx-auto p-4 flex-grow">{children}</main>
+        <main className="mx-auto p-4 flex-grow">{children}</main>
       </div>
       <footer className="bg-primary text-secondary-foreground p-4 text-center">
         <p>&copy; Next.js Starter Template</p>

@@ -31,6 +31,12 @@
   --warning-foreground: #FFFFFF; /* White for warning text */
   --info: #3B82F6; /* Blue for info */
   --info-foreground: #FFFFFF; /* White for info text */
+    
+  /* New colors for hover and disabled states */
+  --button-disabled-bg: #676767; /* Darker gray for disabled background */
+  --button-disabled-foreground: #2F2F2F; /* Lighter gray for disabled text/icon */
+  --button-hover-bg: #464646; /* Hover state background slightly lighter */
+  --button-bg: #FFFFFF; /* Default button background */
 }
 
 body {
