@@ -3,8 +3,7 @@
 import { useState } from 'react';
 import { useAuth } from '@/app/context/AuthContext';
 import Link from 'next/link';
-import { FaUserCircle } from 'react-icons/fa';
-import { MdOutlineLogout } from 'react-icons/md';
+import { CircleUser, LogOut } from 'lucide-react';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -21,7 +20,7 @@ const Navbar = () => {
         {user ? (
           <>
             <div onClick={toggleDropdown} className="cursor-pointer pr-8">
-              <FaUserCircle className="w-10 h-10 text-foreground" />
+              <CircleUser className="w-10 h-10 text-foreground" />
             </div>
             {dropdownOpen && (
               <div className="absolute right-2 p-4 mt-2 w-auto bg-secondary border border-border shadow-lg rounded">
@@ -33,7 +32,7 @@ const Navbar = () => {
                   onClick={logout}
                   className="flex items-center w-full text-left bg-secondary hover:bg-secondary-hover text-foreground py-2 px-4 rounded"
                 >
-                  <MdOutlineLogout className="mr-2 w-6 h-6" />
+                  <LogOut className="mr-2 w-6 h-6" />
                   Logout
                 </button>
               </div>
