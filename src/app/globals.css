@@ -7,6 +7,7 @@
   --background: #121212; /* Dark background */
   --primary: #1F1F1F; /* Slightly lighter dark for primary elements */
   --secondary: #2C2C2C; /* Dark gray for secondary elements */
+  --secondary-hover: #3F3F3F; /* Muted dark gray for secondary color hover */
   --card: #1F1F1F; /* Same as primary for card backgrounds */
   --card-foreground: #E4E4E7; /* Light gray for card text */
   --card-hover: #2C2C2C; /* Slight light gray color on card hover */

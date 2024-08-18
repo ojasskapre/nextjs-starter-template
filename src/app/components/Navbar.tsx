@@ -1,10 +1,16 @@
 'use client';
 
+import { useState } from 'react';
 import { useAuth } from '@/app/context/AuthContext';
 import Link from 'next/link';
+import { FaUserCircle } from 'react-icons/fa';
+import { MdOutlineLogout } from 'react-icons/md';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
 
   return (
     <nav className="flex justify-between items-center p-4 bg-primary text-foreground">
@@ -14,13 +20,24 @@ const Navbar = () => {
       <div>
         {user ? (
           <>
-            <span className="mr-4 text-foreground">{user.email}</span>
-            <button
-              onClick={logout}
-              className="bg-destructive hover:bg-destructive-hover text-destructive-foreground font-bold py-2 px-4 rounded"
-            >
-              Logout
-            </button>
+            <div onClick={toggleDropdown} className="cursor-pointer pr-8">
+              <FaUserCircle className="w-10 h-10 text-foreground" />
+            </div>
+            {dropdownOpen && (
+              <div className="absolute right-2 p-4 mt-2 w-auto bg-secondary border border-border shadow-lg rounded">
+                <span className="block px-4 py-2 text-foreground">
+                  {`Welcome, ${user.email}`}
+                </span>
+                <hr className="my-2 border-border" />
+                <button
+                  onClick={logout}
+                  className="flex items-center w-full text-left bg-secondary hover:bg-secondary-hover text-foreground py-2 px-4 rounded"
+                >
+                  <MdOutlineLogout className="mr-2 w-6 h-6" />
+                  Logout
+                </button>
+              </div>
+            )}
           </>
         ) : (
           <>

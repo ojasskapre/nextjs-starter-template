@@ -13,6 +13,7 @@ const config: Config = {
         background: 'var(--background)',
         primary: 'var(--primary)',
         secondary: 'var(--secondary)',
+        'secondary-hover': 'var(--secondary-hover)',
         card: 'var(--card)',
         'card-foreground': 'var(--card-foreground)',
         'card-hover': 'var(--card-hover)',
