@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import Navbar from './components/Navbar';
+import Sidebar from './components/Sidebar';
 import { AuthProvider } from '@/app/context/AuthContext';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -23,6 +24,7 @@ export default function RootLayout({
           <AuthProvider>
             <Navbar />
             <div className="flex flex-grow">
+              <Sidebar />
               <main className="max-w-4xl mx-auto p-4 flex-grow">
                 {children}
               </main>
