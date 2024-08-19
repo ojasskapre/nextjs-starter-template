@@ -5,6 +5,7 @@ import { useAuth } from '@/app/context/AuthContext';
 import { PanelRightOpen, PanelRightClose } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
 
 const Sidebar: React.FC = () => {
   const { user } = useAuth();
@@ -13,7 +14,7 @@ const Sidebar: React.FC = () => {
   if (!user) return null;
 
   return (
-    <div className={`flex h-full ${!isOpen ? 'mt-4 ml-4' : ''}`}>
+    <div className={cn('flex h-full', !isOpen && 'pt-4 pl-4')}>
       {/* Sidebar - pinned and collapsible */}
       {!isOpen ? (
         <div className="flex items-start">
@@ -28,9 +29,10 @@ const Sidebar: React.FC = () => {
         </div>
       ) : (
         <Card
-          className={`border-0 h-full flex flex-col transition-all duration-300 ${
+          className={cn(
+            'border-0 h-full flex flex-col transition-all duration-300',
             isOpen ? 'w-64 p-4' : 'w-0'
-          }`}
+          )}
         >
           <div className="flex justify-between items-center mb-4">
             {isOpen && <h2 className="text-lg font-bold">History</h2>}

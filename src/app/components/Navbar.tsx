@@ -5,7 +5,7 @@ import { useAuth } from '@/app/context/AuthContext';
 import Link from 'next/link';
 import { LogOut } from 'lucide-react';
 import ThemeModeToggle from './ThemeModeToggle';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -35,7 +35,7 @@ const Navbar = () => {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Avatar className="cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600 ml-4">
-                  <AvatarImage src="<get-image-url>" />
+                  {/* <AvatarImage src="<get-image-url>" /> */}
                   <AvatarFallback>
                     {user.email.slice(0, 2).toUpperCase()}
                   </AvatarFallback>

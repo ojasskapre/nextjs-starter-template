@@ -17,7 +17,7 @@ export default function ChatSection() {
   });
 
   return (
-    <div className="flex-1 h-full flex flex-col justify-center">
+    <div className="h-full flex flex-col">
       <div className="space-y-4 w-full h-full flex flex-col">
         <ChatMessages
           messages={messages}

@@ -24,9 +24,9 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
     <>
       <div className="flex flex-grow h-screen">
         <Sidebar />
-        <main className="mx-autoflex-grow">
+        <main className="flex flex-grow flex-col">
           <Navbar />
-          <div className="p-4 h-[calc(100vh-128px)]">{children}</div>
+          <div className="p-4 h-[calc(100vh-72px)]">{children}</div>
         </main>
       </div>
     </>

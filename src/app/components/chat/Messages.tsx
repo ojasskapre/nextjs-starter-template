@@ -40,10 +40,10 @@ export default function ChatMessages({
 
   return (
     <div
-      className="flex-1 w-full p-4 relative overflow-y-auto px-64 scroll-smooth"
+      className="flex-1 w-full p-4 relative overflow-y-auto scroll-smooth"
       ref={scrollableChatContainerRef}
     >
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col gap-5 max-w-4xl mx-auto">
         {messages.map((m, i) => {
           return <ChatMessage key={m.id} chatMessage={m} />;
         })}

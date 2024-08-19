@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 import { Message } from '@/types/message';
 import { ArrowUp } from 'lucide-react';
 
@@ -30,9 +31,10 @@ export default function MessageInput({
   return (
     <form onSubmit={onSubmit}>
       <div
-        className={`flex items-center bg-neutral-50 dark:bg-neutral-800 p-3 mx-64 ${
+        className={cn(
+          'flex items-center bg-neutral-50 dark:bg-neutral-800 p-3 mx-64',
           input.split('\n').length <= 1 ? 'rounded-full' : 'rounded-3xl'
-        }`}
+        )}
       >
         <textarea
           value={input}
