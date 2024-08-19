@@ -2,43 +2,49 @@
 
 import React, { useState } from 'react';
 import { useAuth } from '@/app/context/AuthContext';
-import { PanelRightOpen } from 'lucide-react';
-import { PanelRightClose } from 'lucide-react';
+import { PanelRightOpen, PanelRightClose } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 
 const Sidebar: React.FC = () => {
   const { user } = useAuth();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
 
   if (!user) return null;
 
   return (
-    <div>
-      {/* Expand Button - visible when sidebar is closed */}
-      {!isOpen && (
+    <div className="flex h-full">
+      {/* Sidebar - pinned and collapsible */}
+      {!isOpen ? (
         <div className="flex items-start">
-          <button
-            onClick={() => setIsOpen(true)}
-            className="p-2 bg-primary text-white m-2 rounded-md"
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setIsOpen(!isOpen)}
+            className="ml-2"
           >
             <PanelRightClose className="w-6 h-6" />
-          </button>
+          </Button>
         </div>
-      )}
-
-      {/* Sidebar - visible when isOpen is true */}
-      {isOpen && (
-        <div className="bg-primary text-white h-full w-64 p-4 flex flex-col">
-          <div className="flex justify-between items-center">
-            <h2 className="text-lg font-bold">History</h2>
-            <button
-              onClick={() => setIsOpen(false)}
-              className="text-white focus:outline-none"
+      ) : (
+        <Card
+          className={`border-0 h-full flex flex-col transition-all duration-300 ${
+            isOpen ? 'w-64 p-4' : 'w-0'
+          }`}
+        >
+          <div className="flex justify-between items-center mb-4">
+            {isOpen && <h2 className="text-lg font-bold">History</h2>}
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => setIsOpen(!isOpen)}
             >
               <PanelRightOpen className="w-6 h-6" />
-            </button>
+            </Button>
           </div>
           {/* Add contents for sidebar here */}
-        </div>
+          <div className="flex-grow">{/* Your sidebar content */}</div>
+        </Card>
       )}
     </div>
   );

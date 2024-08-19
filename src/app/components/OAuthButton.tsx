@@ -1,7 +1,6 @@
 import React from 'react';
-import { FaGoogle } from 'react-icons/fa';
-import { FaGithub } from 'react-icons/fa';
-import { FaFacebook } from 'react-icons/fa';
+import { FaGoogle, FaGithub, FaFacebook } from 'react-icons/fa';
+import { Button } from '@/components/ui/button';
 
 interface OAuthButtonProps {
   provider: 'google' | 'github' | 'facebook';
@@ -23,19 +22,20 @@ const OAuthButton: React.FC<OAuthButtonProps> = ({
       case 'facebook':
         return <FaFacebook className="h-5 w-5 mr-2" />;
       default:
-        return '';
+        return null;
     }
   };
 
   return (
-    <button
+    <Button
       type="button"
-      className="w-full bg-white text-gray-800 py-3 rounded border border-gray-300 flex items-center justify-center hover:bg-gray-100 transition duration-200 mt-4"
+      variant="outline"
+      className="w-full flex items-center justify-center mt-4"
       onClick={onClick}
     >
       {getIconComponent()}
       {buttonText}
-    </button>
+    </Button>
   );
 };
 

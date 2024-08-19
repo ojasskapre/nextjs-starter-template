@@ -1,54 +1,40 @@
-import type { Config } from 'tailwindcss';
+import type { Config } from "tailwindcss"
 
-const config: Config = {
+const config = {
+  darkMode: ["class"],
   content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    './pages/**/*.{ts,tsx}',
+    './components/**/*.{ts,tsx}',
+    './app/**/*.{ts,tsx}',
+    './src/**/*.{ts,tsx}',
   ],
+  prefix: "",
   theme: {
-    extend: {
-      colors: {
-        foreground: 'var(--foreground)',
-        background: 'var(--background)',
-        primary: 'var(--primary)',
-        secondary: 'var(--secondary)',
-        'secondary-hover': 'var(--secondary-hover)',
-        card: 'var(--card)',
-        'card-foreground': 'var(--card-foreground)',
-        'card-hover': 'var(--card-hover)',
-        popover: 'var(--popover)',
-        'popover-foreground': 'var(--popover-foreground)',
-        muted: 'var(--muted)',
-        'muted-foreground': 'var(--muted-foreground)',
-        accent: 'var(--accent)',
-        'accent-foreground': 'var(--accent-foreground)',
-        'accent-hover': 'var(-accent-hover)',
-        destructive: 'var(--destructive)',
-        'destructive-foreground': 'var(--destructive-foreground)',
-        border: 'var(--border)',
-        input: 'var(--input)',
-        ring: 'var(--ring)',
-        success: 'var(--success)',
-        'success-foreground': 'var(--success-foreground)',
-        error: 'var(--error)',
-        'error-foreground': 'var(--error-foreground)',
-        warning: 'var(--warning)',
-        'warning-foreground': 'var(--warning-foreground)',
-        info: 'var(--info)',
-        'info-foreground': 'var(--info-foreground)',
-        'button-disabled-bg': 'var(--button-disabled-bg)',
-        'button-disabled-foreground': 'var(--button-disabled-foreground)',
-        'button-hover-bg': 'var(--button-disabled-bg)',
-        'button-bg': 'var(--button-bg)',
+    container: {
+      center: true,
+      padding: "2rem",
+      screens: {
+        "2xl": "1400px",
       },
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+    },
+    extend: {
+      keyframes: {
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+      },
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
       },
     },
   },
-  plugins: [],
-};
-export default config;
+  plugins: [require("tailwindcss-animate")],
+} satisfies Config
+
+export default config

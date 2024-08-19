@@ -6,21 +6,29 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { createClient } from '@/utils/supabase/client';
 import { useRouter } from 'next/navigation';
 import OAuthButton from '@/app/components/OAuthButton';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 
 const schema = z.object({
-  email: z.string().email(),
-  password: z.string().min(8),
+  email: z.string().email({ message: 'Please enter a valid email address.' }),
+  password: z
+    .string()
+    .min(8, { message: 'Password must be at least 8 characters long.' }),
 });
 
 type FormFields = z.infer<typeof schema>;
 
 const SignIn = () => {
-  const {
-    register,
-    handleSubmit,
-    setError,
-    formState: { isSubmitting, errors },
-  } = useForm<FormFields>({ resolver: zodResolver(schema) });
+  const form = useForm<FormFields>({ resolver: zodResolver(schema) });
 
   const router = useRouter();
 
@@ -34,7 +42,7 @@ const SignIn = () => {
     });
 
     if (error) {
-      setError('root', {
+      form.setError('root', {
         message: 'Could not authenticate user!',
       });
     } else {
@@ -50,50 +58,74 @@ const SignIn = () => {
       provider,
     });
     if (error) {
-      setError('root', {
+      form.setError('root', {
         message: 'Could not authenticate user!',
       });
     }
   };
 
   return (
-    <div className="max-w-md w-full mx-auto p-8 bg-card rounded-lg shadow-lg">
-      <h2 className="text-3xl font-bold mb-6 text-foreground">Sign In</h2>
-      <form onSubmit={handleSubmit(handleSignIn)}>
-        <input
-          className="border border-border bg-input text-foreground p-3 mb-2 w-full rounded focus:outline-none focus:ring focus:ring-ring"
-          placeholder="Email"
-          {...register('email')}
-        />
-        {errors.email && (
-          <div className="text-error text-sm">{errors.email.message}</div>
-        )}
-        <input
-          className="border border-border bg-input text-foreground p-3 mb-2 mt-4 w-full rounded focus:outline-none focus:ring focus:ring-ring"
-          type="password"
-          placeholder="Password"
-          {...register('password')}
-        />
-        {errors.password && (
-          <div className="text-error text-sm">{errors.password.message}</div>
-        )}
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="w-full bg-accent text-accent-foreground py-3 rounded hover:bg-accent-hover transition duration-200 mt-4"
-        >
-          {isSubmitting ? 'Loading...' : 'Sign In'}
-        </button>
-        <OAuthButton
-          provider="google"
-          buttonText="Sign In with Google"
-          onClick={() => handleOAuthSignin('google')}
-        />
-        {errors.root && (
-          <div className="text-error mt-2 text-sm">{errors.root.message}</div>
-        )}
-      </form>
-    </div>
+    <Card className="max-w-md w-full mx-auto p-8">
+      <h2 className="text-3xl font-bold mb-6">Sign In</h2>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(handleSignIn)} className="space-y-6">
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Email"
+                    type="text"
+                    {...field}
+                    value={field.value || ''}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Password"
+                    type="password"
+                    {...field}
+                    value={field.value || ''}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button
+            type="submit"
+            disabled={form.formState.isSubmitting}
+            className="w-full"
+          >
+            {form.formState.isSubmitting ? 'Loading...' : 'Sign In'}
+          </Button>
+          <OAuthButton
+            provider="google"
+            buttonText="Sign In with Google"
+            onClick={() => handleOAuthSignin('google')}
+          />
+
+          {form.formState.errors.root && (
+            <FormMessage className="mt-2">
+              {form.formState.errors.root.message}
+            </FormMessage>
+          )}
+        </form>
+      </Form>
+    </Card>
   );
 };
 

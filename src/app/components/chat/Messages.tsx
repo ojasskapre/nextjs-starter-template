@@ -43,7 +43,7 @@ export default function ChatMessages({
       className="flex-1 w-full p-4 relative overflow-y-auto px-64 scroll-smooth"
       ref={scrollableChatContainerRef}
     >
-      <div className="flex flex-col gap-5 divide-y divide-border">
+      <div className="flex flex-col gap-5">
         {messages.map((m, i) => {
           return <ChatMessage key={m.id} chatMessage={m} />;
         })}
