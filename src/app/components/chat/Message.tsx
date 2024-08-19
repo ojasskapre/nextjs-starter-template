@@ -1,10 +1,10 @@
-import { Message } from '@/types/message';
 import { useCopyToClipboard } from './hooks/useCopyToClipboard';
 import { Check, Copy } from 'lucide-react';
 import ChatAvatar from './Avatar';
 import Markdown from './Markdown';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Message } from 'ai';
 
 export default function ChatMessage({ chatMessage }: { chatMessage: Message }) {
   const { isCopied, copyToClipboard } = useCopyToClipboard({ timeout: 2000 });

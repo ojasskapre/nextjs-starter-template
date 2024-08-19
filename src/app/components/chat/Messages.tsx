@@ -2,18 +2,13 @@
 
 import { useEffect, useRef } from 'react';
 import { Loader2 } from 'lucide-react';
-import { Message } from '@/types/message';
+import { ChatHandler } from '@/types/chat.interface';
 import ChatMessage from './Message';
 
 export default function ChatMessages({
   messages,
   isLoading,
-  append,
-}: {
-  messages: Message[];
-  isLoading: boolean;
-  append: (message: Message) => void;
-}) {
+}: Pick<ChatHandler, 'messages' | 'isLoading'>) {
   const scrollableChatContainerRef = useRef<HTMLDivElement>(null);
 
   const messageLength = messages.length;
@@ -49,7 +44,7 @@ export default function ChatMessages({
         })}
         {isPending && (
           <div className="flex justify-center items-center pt-10">
-            <Loader2 className="h-4 w-4 animate-spin" />
+            <Loader2 className="h-6 w-6 animate-spin" />
           </div>
         )}
       </div>

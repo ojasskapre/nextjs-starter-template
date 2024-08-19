@@ -6,6 +6,7 @@ import './globals.css';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import { AuthProvider, useAuth } from '@/app/context/AuthContext';
+import { LoaderCircle } from 'lucide-react';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -15,7 +16,7 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-background">
-        <p>Loading...</p>
+        <LoaderCircle className="animate-spin text-blue-500 w-10 h-10" />
       </div>
     );
   }

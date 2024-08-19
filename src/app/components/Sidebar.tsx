@@ -14,7 +14,13 @@ const Sidebar: React.FC = () => {
   if (!user) return null;
 
   return (
-    <div className={cn('flex h-full', !isOpen && 'pt-4 pl-4')}>
+    <div
+      className={cn(
+        'flex h-full',
+        !isOpen && 'pt-4 pl-4',
+        isOpen && 'border-r border-neutral-100 dark:border-neutral-900'
+      )}
+    >
       {/* Sidebar - pinned and collapsible */}
       {!isOpen ? (
         <div className="flex items-start">
