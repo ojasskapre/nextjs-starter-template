@@ -2,14 +2,14 @@
 
 ## Overview
 
-This project is a chatbut application built using Next.js, TypeScript, Supabase and Langchain. It leverages OpenAI's GPT-3.5 model to provide a conversational AI experience. The application also includes user authentication via Supabase, allowing users to sign up, log in, and manage their sessions.
+This project is a chatbot application built using Next.js, TypeScript, Supabase, Langchain, and FastAPI. The frontend is responsible for the user interface and handles user interactions, while the backend, powered by FastAPI, processes chat messages using OpenAI's GPT-3.5 model and manages API endpoints. The application includes user authentication via Supabase, allowing users to sign up, log in, and manage their sessions. This architecture ensures a clear separation of concerns, with the backend handling all AI-related logic and the frontend focused on delivering a seamless user experience.
 
 ## Features
 
 - **Real-time Chat**: Users can send messages and receive responses from the AI in real-time.
 - **User Authentication**: Sign up and log in functionality using Supabase.
 - **Markdown Support**: Messages can include Markdown formatting, including LaTeX for mathematical expressions.
-- **Copy to Clipboard**: Users can copy messages to their clipboard easily.
+- **Backend API**: FastAPI backend to handle chat processing and interactions with OpenAI's GPT-3.5 model.
 
 ## Technologies Used
 
@@ -20,6 +20,7 @@ This project is a chatbut application built using Next.js, TypeScript, Supabase 
 - **React**: A JavaScript library for building user interfaces.
 - **Tailwind CSS**: A utility-first CSS framework for styling.
 - **Shadcn**: A component library for creating accessible and consistent UI components.
+- **FastAPI**: A modern, fast (high-performance) web framework for building APIs with Python 3.11+
 
 ## Getting Started
 
@@ -28,14 +29,19 @@ This project is a chatbut application built using Next.js, TypeScript, Supabase 
 - Node.js (version 18 or later)
 - npm or yarn
 - A Supabase account
+- An OpenAI account
+- Python 3.11 or later
+- Poetry (for managing Python dependencies)
 
 ### Installation
+
+##### Frontend
 
 1. Clone the repository:
 
    ```bash
    git clone https://github.com/ojasskapre/nextjs-starter-template.git
-   cd nextjs-starter-template
+   cd nextjs-starter-template/frontend
    ```
 
 2. Install dependencies:
@@ -82,6 +88,43 @@ This project is a chatbut application built using Next.js, TypeScript, Supabase 
    ```
 
 7. Open your browser and navigate to `http://localhost:3000`.
+
+#### Backend
+
+1. Navigate to backend folder
+
+   ```bash
+   cd ../backend
+   ```
+
+2. Install Poetry if you haven't already:
+
+   ```bash
+   curl -sSL https://install.python-poetry.org | python3 -
+   ```
+
+3. Install the backend dependencies:
+
+   ```bash
+   poetry install
+   ```
+
+4. Set up environment variables
+
+   - Create a .env file in the backend directory with your configuration:
+
+   ```bash
+   OPENAI_API_KEY=your_openai_api_key
+   DATABASE_URL=your_database_url  # Optional, if you're using a database
+   ```
+
+5. Run the FastAPI server
+
+   ```bash
+   poetry run uvicorn app.main:app --reload
+   ```
+
+6. The FastAPI server will be running at `http://127.0.0.1:8000`.
 
 ## To-Do Features Checklist
 
