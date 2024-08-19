@@ -10,7 +10,6 @@ This project is a chatbut application built using Next.js, TypeScript, Supabase 
 - **User Authentication**: Sign up and log in functionality using Supabase.
 - **Markdown Support**: Messages can include Markdown formatting, including LaTeX for mathematical expressions.
 - **Copy to Clipboard**: Users can copy messages to their clipboard easily.
-- **Responsive Design**: The application is designed to work on various screen sizes.
 
 ## Technologies Used
 
@@ -20,6 +19,7 @@ This project is a chatbut application built using Next.js, TypeScript, Supabase 
 - **Supabase**: An open-source Firebase alternative for authentication and database management.
 - **React**: A JavaScript library for building user interfaces.
 - **Tailwind CSS**: A utility-first CSS framework for styling.
+- **Shadcn**: A component library for creating accessible and consistent UI components.
 
 ## Getting Started
 
@@ -82,3 +82,12 @@ This project is a chatbut application built using Next.js, TypeScript, Supabase 
    ```
 
 7. Open your browser and navigate to `http://localhost:3000`.
+
+## To-Do Features Checklist
+
+- [ ] **Regenerate Answer**: Allow users to regenerate the AI's response.
+- [ ] **Stop Answer Streaming**: Allow users to stop the streaming of the AI's response mid-answer.
+- [ ] **Create New Chat**: Enable users to start a new chat session.
+- [ ] **Save Chat History**: Save the chat history for users to access later.
+- [ ] **Access Previous Chats**: Allow users to go back to any previous chat and continue the conversation.
+- [ ] **Add Attachments**: Allow users to add attachments to their messages.
