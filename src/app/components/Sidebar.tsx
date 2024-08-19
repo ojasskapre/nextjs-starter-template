@@ -13,7 +13,7 @@ const Sidebar: React.FC = () => {
   if (!user) return null;
 
   return (
-    <div className="flex h-full">
+    <div className={`flex h-full ${!isOpen ? 'mt-4 ml-4' : ''}`}>
       {/* Sidebar - pinned and collapsible */}
       {!isOpen ? (
         <div className="flex items-start">

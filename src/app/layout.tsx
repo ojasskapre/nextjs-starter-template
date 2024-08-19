@@ -22,10 +22,12 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      <Navbar />
-      <div className="flex flex-grow h-[calc(100vh-128px)]">
+      <div className="flex flex-grow h-screen">
         <Sidebar />
-        <main className="mx-auto p-4 flex-grow">{children}</main>
+        <main className="mx-autoflex-grow">
+          <Navbar />
+          <div className="p-4 h-[calc(100vh-128px)]">{children}</div>
+        </main>
       </div>
     </>
   );
