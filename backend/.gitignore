@@ -15,7 +15,9 @@ poetry.lock
 # Virtualenvs
 venv/
 .env/
-.env.*
+.env.local
+.env.production
+.env.development
 
 # VSCode
 .vscode/
@@ -91,7 +93,6 @@ doc/source/
 
 # dotenv
 .env
-*.env
 
 # mypy
 .mypy_cache/
