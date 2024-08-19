@@ -5,7 +5,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { createClient } from '@/utils/supabase/client';
-import OAuthButton from '@/app/components/OAuthButton';
+import OAuthButton from '@/components/OAuthButton';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import {

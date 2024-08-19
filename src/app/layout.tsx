@@ -3,8 +3,8 @@
 import { ThemeProvider } from '@/components/theme-provider';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import Navbar from './components/Navbar';
-import Sidebar from './components/Sidebar';
+import Navbar from '@/components/Navbar';
+import Sidebar from '@/components/Sidebar';
 import { AuthProvider, useAuth } from '@/app/context/AuthContext';
 import { LoaderCircle } from 'lucide-react';
 
