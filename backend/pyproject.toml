@@ -3,14 +3,19 @@ name = "backend"
 version = "0.1.0"
 description = "A FastAPI backend for my chatbot"
 authors = ["Ojas Kapre <ojasskapre@gmail.com>", "Sarvesh Kapre <sarveshkapre@gmail.com>"]
-readme = "README.md"
 package-mode = false
 
 [tool.poetry.dependencies]
-python = ">=3.11"
+python = ">=3.11,<4.0"
 pydantic = "^2.8.2"
 fastapi = "^0.112.1"
 uvicorn = "^0.30.6"
+langchain = "^0.2.14"
+openai = "^1.41.0"
+httpx = "^0.27.0"
+langchain-openai = "^0.1.22"
+langchain-community = "^0.2.12"
+python-dotenv = "^1.0.1"
 
 [tool.poetry.group.dev.dependencies]
 fastapi = "^0.112.1"

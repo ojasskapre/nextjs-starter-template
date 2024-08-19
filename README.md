@@ -126,6 +126,26 @@ This project is a chatbot application built using Next.js, TypeScript, Supabase,
 
 6. The FastAPI server will be running at `http://127.0.0.1:8000`.
 
+#### Alternative Setup (Not using FastAPI)
+
+Instead of using FastAPI to handle and respond to chat queries, you can opt to handle everything directly in the Next.js frontend by leveraging `langchain.js`, `@langchain/openai`. This approach simplifies the architecture by keeping everything within the frontend, which can be useful for specific use cases.
+
+Steps to implement:
+
+1. Create the API Route in Next.js
+
+   Navigate to the `@/app/api/chat/` directory and create a new file named `route.ts`.
+
+   ```bash
+   cd frontend/app/api/chat
+   ```
+
+2. Copy the contents from [@/example/chat.route.ts](https://github.com/ojasskapre/nextjs-starter-template/blob/main/frontend/src/example/chat.route.ts) to the newly created `route.ts` file.
+
+3. Update the api parameter in `useChat()` in [@/components/chat/Section.tsx](https://github.com/ojasskapre/nextjs-starter-template/blob/main/frontend/src/components/chat/Section.tsx) from `${backendUrl}/api/chat` to `/api/chat`
+
+4. Follow the frontend installation steps and start the application
+
 ## To-Do Features Checklist
 
 - [ ] **Regenerate Answer**: Allow users to regenerate the AI's response.

@@ -13,7 +13,7 @@ export default function ChatSection() {
     handleSubmit,
     stop,
   } = useChat({
-    api: '/api/chat',
+    api: `${process.env.NEXT_PUBLIC_CHAT_API}/api/chat`,
     streamProtocol: 'text',
   });
 

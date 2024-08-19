@@ -1,3 +1,7 @@
+// Instead of using FastAPI to respond to the query, you can directly use langchain.js
+// and create `@/app/api/chat/route.ts` file and paste below code in the file.
+// after creating the file, make sure to update the api in useChat() in the @/components/chat/Section.tsx folder
+
 import { NextRequest, NextResponse } from 'next/server';
 import { Message as VercelChatMessage } from 'ai';
 
