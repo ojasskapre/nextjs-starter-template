@@ -1,6 +1,6 @@
 export type Message = {
   id: string;
   content: string;
-  role: 'system' | 'user';
-  createdAt: Date;
+  role: 'function' | 'data' | 'system' | 'user' | 'assistant' | 'tool';
+  createdAt?: Date | undefined;
 };

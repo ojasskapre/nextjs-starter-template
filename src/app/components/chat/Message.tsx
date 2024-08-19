@@ -2,7 +2,7 @@ import { Message } from '@/types/message';
 import { useCopyToClipboard } from './hooks/useCopyToClipboard';
 import { Check, Copy } from 'lucide-react';
 import ChatAvatar from './Avatar';
-import ChatMessageContent from './MessageContent';
+import Markdown from './Markdown';
 
 export default function ChatMessage({ chatMessage }: { chatMessage: Message }) {
   const { isCopied, copyToClipboard } = useCopyToClipboard({ timeout: 2000 });
@@ -18,7 +18,7 @@ export default function ChatMessage({ chatMessage }: { chatMessage: Message }) {
     >
       <ChatAvatar role={chatMessage.role} />
       <div className="group flex flex-1 flex-grow justify-between gap-2">
-        <ChatMessageContent message={chatMessage} />
+        <Markdown content={chatMessage.content} />
         <button
           onClick={() => copyToClipboard(chatMessage.content)}
           className="h-8 w-8"

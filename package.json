@@ -10,8 +10,14 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
+    "@langchain/community": "^0.2.28",
+    "@langchain/core": "^0.2.27",
+    "@langchain/openai": "^0.2.7",
     "@supabase/ssr": "^0.4.0",
     "@supabase/supabase-js": "^2.45.1",
+    "ai": "^3.3.9",
+    "langchain": "^0.2.16",
+    "lodash": "^4.17.21",
     "lucide-react": "^0.428.0",
     "next": "14.2.5",
     "react": "^18",
@@ -28,6 +34,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/lodash": "^4.17.7",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
