@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import {
@@ -26,12 +27,18 @@ const ChatSessionsList: React.FC<ChatSessionsListProps> = ({
   chatSessions,
 }) => {
   // TODO: make groups my date time (e.g. Today, Yesterday, Last Week, ...)
+  const router = useRouter();
+  const handleSessionClick = (sessionId: string) => {
+    router.push(`/chat/${sessionId}`);
+  };
+
   return (
     <div className="flex flex-col overflow-y-auto h-full mb-4 space-y-2">
       {chatSessions.map((session) => (
         <Card
           key={session.id}
-          className="hover:bg-neutral-100 hover:dark:bg-neutral-800"
+          className="hover:bg-neutral-100 hover:dark:bg-neutral-800 cursor-pointer"
+          onClick={() => handleSessionClick(session.id)}
         >
           <CardContent className="p-2 flex items-center justify-between">
             <TooltipProvider>
@@ -53,6 +60,7 @@ const ChatSessionsList: React.FC<ChatSessionsListProps> = ({
                         variant="ghost"
                         size="icon"
                         className="rounded-full h-8 hover:font-bold"
+                        onClick={(e) => e.stopPropagation()} // Prevent event from triggering parent click
                       >
                         <Ellipsis className="w-4 h-4" />
                       </Button>
@@ -63,17 +71,17 @@ const ChatSessionsList: React.FC<ChatSessionsListProps> = ({
               </TooltipProvider>
               <DropdownMenuContent
                 align="end"
-                className="dark:bg-neutral-800 p-2"
+                className="dark:bg-neutral-900 p-2"
               >
-                <DropdownMenuItem className="cursor-pointer hover:bg-neutral-300 hover:dark:bg-neutral-700 p-4 rounded-xl">
+                <DropdownMenuItem className="cursor-pointer hover:bg-neutral-300 hover:dark:bg-neutral-100 p-4 rounded-xl">
                   <Share className="w-4 h-4 mr-2" />
                   Share
                 </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer hover:bg-neutral-300 hover:dark:bg-neutral-700 p-4 rounded-xl">
+                <DropdownMenuItem className="cursor-pointer hover:bg-neutral-300 hover:dark:bg-neutral-100 p-4 rounded-xl">
                   <Edit className="w-4 h-4 mr-2" />
                   Rename
                 </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer hover:bg-neutral-300 hover:dark:bg-neutral-700 p-4 rounded-xl text-red-500">
+                <DropdownMenuItem className="cursor-pointer hover:bg-neutral-300 hover:dark:bg-neutral-100 p-4 rounded-xl text-red-500">
                   <Trash className="w-4 h-4 mr-2" />
                   Delete
                 </DropdownMenuItem>

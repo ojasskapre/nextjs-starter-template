@@ -18,7 +18,7 @@ async def start_chat(chatRequest: ChatRequest, user = Depends(verify_jwt), db: S
     title = f"New Chat - {current_time}"
     
     # Create a new chat session
-    chat_session = ChatSession(user_id=user.user.id, title=title)
+    chat_session = ChatSession(id=chatRequest.sessionId, user_id=user.user.id, title=title)
     db.add(chat_session)
     db.commit()
     db.refresh(chat_session)
@@ -69,5 +69,5 @@ async def continue_chat(session_id: UUID, chat_request: ChatRequest, user=Depend
 @router.get("/sessions", response_model=list[ChatSessionResponse])
 async def get_all_chat_sessions(user=Depends(verify_jwt), db: Session = Depends(get_db)):
     print(user.user.id)
-    chat_sessions = db.query(ChatSession).filter(ChatSession.user_id == user.user.id).order_by(ChatSession.created_at.asc()).all()
+    chat_sessions = db.query(ChatSession).filter(ChatSession.user_id == user.user.id).order_by(ChatSession.created_at.desc()).all()
     return chat_sessions

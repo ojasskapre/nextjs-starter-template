@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List
+from typing import List, Optional
 from uuid import UUID
 from datetime import datetime
 
@@ -24,6 +24,7 @@ class ChatMessage(BaseModel):
     content: str
 
 class ChatRequest(BaseModel):
+    sessionId: Optional[UUID]
     messages: List[ChatMessage]
 
 class ChatResponse(BaseModel):

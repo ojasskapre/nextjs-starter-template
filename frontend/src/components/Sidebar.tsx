@@ -2,12 +2,13 @@
 
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/app/context/AuthContext';
+import { useRouter } from 'next/navigation';
 import { PanelRightOpen, PanelRightClose, CirclePlus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { Separator } from '@/components/ui/separator';
-import { getAllChatSessions } from '@/services/chatService';
+import { getAllChatSessions } from '@/utils/api';
 import { IChatSession } from '@/types/chat.interface';
 import ChatSessionsList from '@/components/chat/SessionsList';
 
@@ -15,6 +16,8 @@ const Sidebar: React.FC = () => {
   const { user, getToken } = useAuth();
   const [isOpen, setIsOpen] = useState(true);
   const [chatSessions, setChatSessions] = useState<IChatSession[]>([]);
+
+  const router = useRouter();
 
   if (!user) return null;
 
@@ -62,7 +65,7 @@ const Sidebar: React.FC = () => {
         <Card
           className={cn(
             'border-0 h-full flex flex-col transition-all duration-300',
-            isOpen ? 'w-64 p-4' : 'w-0'
+            isOpen ? 'w-72 p-4' : 'w-0'
           )}
         >
           <div className="flex justify-between items-center mb-4">
@@ -79,6 +82,9 @@ const Sidebar: React.FC = () => {
             <Button
               variant="outline"
               className="flex justify-start space-x-2 items-center w-full"
+              onClick={() => {
+                router.push('/');
+              }}
             >
               <CirclePlus className="mr-2" />
               <span>New Chat</span>
