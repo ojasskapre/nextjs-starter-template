@@ -73,7 +73,7 @@ async def get_all_chat_sessions(user=Depends(verify_jwt), db: Session = Depends(
     return chat_sessions
 
 # route to update title for a chat sessions
-@router.put("/sessions/{session_id}/title", response_model=ChatSessionResponse)
+@router.patch("/sessions/{session_id}/title", response_model=ChatSessionResponse)
 async def update_chat_session_title(
     session_id: UUID, 
     title_request: UpdateTitleRequest,

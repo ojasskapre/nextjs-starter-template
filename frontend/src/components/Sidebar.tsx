@@ -3,19 +3,28 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/app/context/AuthContext';
 import { useRouter } from 'next/navigation';
-import { PanelRightOpen, PanelRightClose, CirclePlus } from 'lucide-react';
+import {
+  PanelRightOpen,
+  PanelRightClose,
+  CirclePlus,
+  Loader2,
+  AlertCircle,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { Separator } from '@/components/ui/separator';
 import { getAllChatSessions } from '@/utils/api';
 import { IChatSession } from '@/types/chat.interface';
 import ChatSessionsList from '@/components/chat/SessionsList';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 const Sidebar: React.FC = () => {
   const { user, getToken } = useAuth();
   const [isOpen, setIsOpen] = useState(true);
   const [chatSessions, setChatSessions] = useState<IChatSession[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const router = useRouter();
 
@@ -24,6 +33,8 @@ const Sidebar: React.FC = () => {
   useEffect(() => {
     async function fetchChatSessions() {
       try {
+        setIsLoading(true);
+        setError('');
         const token = await getToken();
         if (token) {
           const sessions = await getAllChatSessions(token);
@@ -33,6 +44,9 @@ const Sidebar: React.FC = () => {
         }
       } catch (error) {
         console.error('Failed to fetch chat sessions:', error);
+        setError('Failed to fetch chat sessions');
+      } finally {
+        setIsLoading(false);
       }
     }
 
@@ -92,7 +106,24 @@ const Sidebar: React.FC = () => {
             <Separator className="my-4" />
 
             {/* Display all chat sessions here */}
-            <ChatSessionsList chatSessions={chatSessions} />
+            {isLoading && (
+              <div className="flex justify-center items-center">
+                <Loader2 className="h-6 w-6 animate-spin" />
+              </div>
+            )}
+            {!isLoading && !error && (
+              <ChatSessionsList
+                chatSessions={chatSessions}
+                setChatSessions={setChatSessions}
+              />
+            )}
+            {error && (
+              <Alert variant="destructive">
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Error</AlertTitle>
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
           </div>
         </Card>
       )}

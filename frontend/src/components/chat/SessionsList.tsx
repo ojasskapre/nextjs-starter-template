@@ -1,6 +1,7 @@
 'use client';
 
-import React from 'react';
+import React, { useState, Dispatch, SetStateAction } from 'react';
+import { useAuth } from '@/app/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -11,6 +12,15 @@ import {
   DropdownMenuItem,
 } from '@/components/ui/dropdown-menu';
 import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogDescription,
+} from '@/components/ui/alert-dialog';
+import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
@@ -18,18 +28,64 @@ import {
 } from '@/components/ui/tooltip';
 import { Ellipsis, Trash, Edit, Archive, Share } from 'lucide-react';
 import { IChatSession } from '@/types/chat.interface';
+import { updateChatSessionTitle, deleteChatSession } from '@/utils/api';
 
 interface ChatSessionsListProps {
   chatSessions: IChatSession[];
+  setChatSessions: Dispatch<SetStateAction<IChatSession[]>>;
 }
 
 const ChatSessionsList: React.FC<ChatSessionsListProps> = ({
   chatSessions,
+  setChatSessions,
 }) => {
   // TODO: make groups my date time (e.g. Today, Yesterday, Last Week, ...)
   const router = useRouter();
+
+  const { getToken } = useAuth();
+
+  const [loading, setLoading] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
+    null
+  );
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+
   const handleSessionClick = (sessionId: string) => {
     router.push(`/chat/${sessionId}`);
+  };
+
+  const handleDelete = async () => {
+    if (!selectedSessionId) return;
+
+    setLoading(selectedSessionId);
+    setError(null);
+
+    try {
+      const token = await getToken();
+      await deleteChatSession(selectedSessionId, token!);
+      // Update the UI by removing the deleted session
+      setChatSessions((prevSessions) =>
+        prevSessions.filter((session) => session.id !== selectedSessionId)
+      );
+      // navigate to home page after deletion
+      router.push('/');
+    } catch (err) {
+      setError('Failed to delete session.');
+    } finally {
+      setLoading(null);
+      setSelectedSessionId(null);
+      setIsDialogOpen(false);
+    }
+  };
+
+  const openDeleteDialog = (sessionId: string) => {
+    setSelectedSessionId(sessionId);
+    setIsDialogOpen(true);
+  };
+
+  const closeDeleteDialog = () => {
+    setIsDialogOpen(false);
   };
 
   return (
@@ -81,7 +137,14 @@ const ChatSessionsList: React.FC<ChatSessionsListProps> = ({
                   <Edit className="w-4 h-4 mr-2" />
                   Rename
                 </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer hover:bg-neutral-300 hover:dark:bg-neutral-100 p-4 rounded-xl text-red-500">
+
+                <DropdownMenuItem
+                  className="cursor-pointer hover:bg-neutral-300 hover:dark:bg-neutral-100 p-4 rounded-xl text-red-500"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    openDeleteDialog(session.id);
+                  }}
+                >
                   <Trash className="w-4 h-4 mr-2" />
                   Delete
                 </DropdownMenuItem>
@@ -90,6 +153,33 @@ const ChatSessionsList: React.FC<ChatSessionsListProps> = ({
           </CardContent>
         </Card>
       ))}
+      <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <AlertDialogTrigger asChild>
+          <Button className="hidden">Open Dialog</Button>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Chat Session</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete this chat session? This action
+              cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <Button variant="ghost" onClick={closeDeleteDialog}>
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={handleDelete}
+              disabled={loading === selectedSessionId}
+            >
+              {loading === selectedSessionId ? 'Deleting...' : 'Delete'}
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+      {error && <p className="text-red-500">{error}</p>}
     </div>
   );
 };
