@@ -43,7 +43,6 @@ const Sidebar: React.FC = () => {
           throw new Error('token not available');
         }
       } catch (error) {
-        console.error('Failed to fetch chat sessions:', error);
         setError('Failed to fetch chat sessions');
       } finally {
         setIsLoading(false);
@@ -83,7 +82,7 @@ const Sidebar: React.FC = () => {
           )}
         >
           <div className="flex justify-between items-center mb-4">
-            {isOpen && <h2 className="text-lg font-bold">History</h2>}
+            {isOpen && <h2 className="text-lg font-bold">App Name</h2>}
             <Button
               variant="outline"
               size="icon"

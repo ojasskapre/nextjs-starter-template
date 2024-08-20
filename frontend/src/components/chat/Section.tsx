@@ -10,6 +10,8 @@ import { useEffect, useState } from 'react';
 import { fetchMessagesForSession } from '@/utils/api';
 import { Message } from 'ai';
 import { v4 as uuidv4 } from 'uuid';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Loader2, AlertCircle } from 'lucide-react';
 
 type ChatSectionProps = {
   sessionId?: string;
@@ -22,6 +24,8 @@ export default function ChatSection({ sessionId }: ChatSectionProps) {
   const [currentSessionId, setCurrentSessionId] = useState<string>(
     sessionId || uuidv4() // Generate a new sessionId if not provided
   );
+  const [fetchLoading, setFetchLoading] = useState(!!sessionId);
+  const [fetchError, setFetchError] = useState('');
 
   const router = useRouter();
 
@@ -37,11 +41,17 @@ export default function ChatSection({ sessionId }: ChatSectionProps) {
   useEffect(() => {
     async function loadMessages() {
       if (sessionId && jwtToken) {
+        setFetchLoading(true);
+        setFetchError('');
         try {
           const messages = await fetchMessagesForSession(sessionId, jwtToken);
           setInitialMessages(messages);
         } catch (error) {
-          console.error('Failed to fetch messages:', error);
+          setFetchError(
+            `Failed to fetch messages for conversation ${sessionId}`
+          );
+        } finally {
+          setFetchLoading(false);
         }
       }
     }
@@ -82,19 +92,35 @@ export default function ChatSection({ sessionId }: ChatSectionProps) {
   return (
     <div className="h-full flex flex-col">
       <div className="space-y-4 w-full h-full flex flex-col">
-        {messages.length ? (
-          <ChatMessages messages={messages} isLoading={isLoading} />
-        ) : (
-          <EmptyScreen handleSubmit={handleSubmit} setInput={setInput} />
+        {fetchLoading && (
+          <div className="flex justify-center items-center pt-10">
+            <Loader2 className="h-6 w-6 animate-spin" />
+          </div>
         )}
-        <MessageInput
-          isLoading={isLoading}
-          input={input}
-          handleSubmit={handleSubmit}
-          handleInputChange={handleInputChange}
-          setInput={setInput}
-          stop={stop}
-        />
+        {!fetchLoading && !fetchError && (
+          <>
+            {messages.length ? (
+              <ChatMessages messages={messages} isLoading={isLoading} />
+            ) : (
+              <EmptyScreen handleSubmit={handleSubmit} setInput={setInput} />
+            )}
+            <MessageInput
+              isLoading={isLoading}
+              input={input}
+              handleSubmit={handleSubmit}
+              handleInputChange={handleInputChange}
+              setInput={setInput}
+              stop={stop}
+            />
+          </>
+        )}
+        {fetchError && (
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>{fetchError}</AlertDescription>
+          </Alert>
+        )}
       </div>
     </div>
   );
