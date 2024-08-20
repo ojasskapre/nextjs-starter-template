@@ -8,6 +8,7 @@ import Sidebar from '@/components/Sidebar';
 import { AuthProvider, useAuth } from '@/context/AuthContext';
 import { Loader2 } from 'lucide-react';
 import { Toaster } from '@/components/ui/toaster';
+import { ChatSessionProvider } from '@/context/ChatSessionContext';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -23,7 +24,7 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <>
+    <ChatSessionProvider>
       <div className="flex flex-grow h-screen">
         <Sidebar />
         <main className="flex flex-grow flex-col">
@@ -31,7 +32,7 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
           <div className="p-4 h-[calc(100vh-72px)]">{children}</div>
         </main>
       </div>
-    </>
+    </ChatSessionProvider>
   );
 }
 

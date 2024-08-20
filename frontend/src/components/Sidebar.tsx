@@ -14,45 +14,35 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { Separator } from '@/components/ui/separator';
-import { getAllChatSessions } from '@/utils/api';
-import { IChatSession } from '@/types/chat.interface';
 import ChatSessionsList from '@/components/chat/SessionsList';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { useChatSession } from '@/context/ChatSessionContext';
 
 const Sidebar: React.FC = () => {
-  const { user, getToken } = useAuth();
+  const { user } = useAuth();
   const [isOpen, setIsOpen] = useState(true);
-  const [chatSessions, setChatSessions] = useState<IChatSession[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
   const router = useRouter();
+  const { chatSessions, setChatSessions, refreshChatSessions } =
+    useChatSession();
 
   if (!user) return null;
 
   useEffect(() => {
-    async function fetchChatSessions() {
+    const fetchSessions = async () => {
+      setIsLoading(true);
       try {
-        setIsLoading(true);
-        setError('');
-        const token = await getToken();
-        if (token) {
-          const sessions = await getAllChatSessions(token);
-          setChatSessions(sessions);
-        } else {
-          throw new Error('token not available');
-        }
-      } catch (error) {
+        await refreshChatSessions();
+      } catch (err) {
         setError('Failed to fetch chat sessions');
       } finally {
         setIsLoading(false);
       }
-    }
-
-    if (user) {
-      fetchChatSessions();
-    }
-  }, []);
+    };
+    fetchSessions();
+  }, [refreshChatSessions]);
 
   return (
     <div

@@ -12,6 +12,7 @@ import { Message } from 'ai';
 import { v4 as uuidv4 } from 'uuid';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Loader2, AlertCircle } from 'lucide-react';
+import { useChatSession } from '@/context/ChatSessionContext';
 
 type ChatSectionProps = {
   sessionId?: string;
@@ -28,6 +29,7 @@ export default function ChatSection({ sessionId }: ChatSectionProps) {
   const [fetchError, setFetchError] = useState('');
 
   const router = useRouter();
+  const { refreshChatSessions } = useChatSession();
 
   useEffect(() => {
     async function fetchToken() {
@@ -85,6 +87,7 @@ export default function ChatSection({ sessionId }: ChatSectionProps) {
       // Route to the new session page only after the first message is sent
       if (!sessionId) {
         router.push(`/chat/${currentSessionId}`);
+        refreshChatSessions(); // trigger refresh in sidebar
       }
     },
   });
