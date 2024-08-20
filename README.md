@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project is a chatbot application built using Next.js, TypeScript, Supabase, Langchain, and FastAPI. The frontend is responsible for the user interface and handles user interactions, while the backend, powered by FastAPI, processes chat messages using OpenAI's GPT-3.5 model and manages API endpoints. The application includes user authentication via Supabase, allowing users to sign up, log in, and manage their sessions. This architecture ensures a clear separation of concerns, with the backend handling all AI-related logic and the frontend focused on delivering a seamless user experience.
+This project is a chatbot application built using Next.js, TypeScript, Supabase, Langchain, and FastAPI. The frontend is responsible for the user interface and handles user interactions, while the backend, powered by FastAPI + SQLAlchemy, processes chat messages using OpenAI's GPT-3.5 model and manages API endpoints. The application includes user authentication via Supabase, allowing users to sign up, log in, and manage their sessions. This architecture ensures a clear separation of concerns, with the backend handling all AI-related logic and the frontend focused on delivering a seamless user experience.
 
 ## Features
 
@@ -115,7 +115,9 @@ This project is a chatbot application built using Next.js, TypeScript, Supabase,
 
    ```bash
    OPENAI_API_KEY=your_openai_api_key
-   DATABASE_URL=your_database_url  # Optional, if you're using a database
+   DATABASE_URL=your_database_url
+   SUPABASE_URL=your-project-url
+   SUPABASE_ANON_KEY=your-anon-key
    ```
 
 5. Run the FastAPI server
