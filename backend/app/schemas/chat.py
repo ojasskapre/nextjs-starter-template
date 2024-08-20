@@ -18,7 +18,14 @@ class ChatSessionResponse(BaseModel):
     created_at: datetime
     updated_at: datetime
 
-# below schema is related to request, actual message and response of LLM
+# this schema is for request to update a chat session's title
+class UpdateTitleRequest(BaseModel):
+    title: str
+
+"""
+Below schemas are related to request, actual message and response of LLM
+"""
+
 class ChatMessage(BaseModel):
     role: str
     content: str

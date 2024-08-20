@@ -51,6 +51,7 @@ export default function ChatSection({ sessionId }: ChatSectionProps) {
   const headers: Record<string, string> = {};
 
   if (jwtToken) {
+    // console.log(jwtToken);
     headers['Authorization'] = `Bearer ${jwtToken}`;
   }
 

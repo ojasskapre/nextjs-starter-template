@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from app.schemas.chat import ChatRequest, ChatResponse, MessageResponse, ChatSessionResponse
+from app.schemas.chat import ChatRequest, ChatResponse, MessageResponse, ChatSessionResponse, UpdateTitleRequest
 from app.services.chat_service import process_chat
 from app.dependencies import verify_jwt
 from app.models import ChatSession, Message
@@ -71,3 +71,59 @@ async def get_all_chat_sessions(user=Depends(verify_jwt), db: Session = Depends(
     print(user.user.id)
     chat_sessions = db.query(ChatSession).filter(ChatSession.user_id == user.user.id).order_by(ChatSession.created_at.desc()).all()
     return chat_sessions
+
+# route to update title for a chat sessions
+@router.put("/sessions/{session_id}/title", response_model=ChatSessionResponse)
+async def update_chat_session_title(
+    session_id: UUID, 
+    title_request: UpdateTitleRequest,
+    user=Depends(verify_jwt), 
+    db: Session = Depends(get_db)
+):
+    # Retrieve the chat session and verify the user
+    chat_session = db.query(ChatSession).filter(ChatSession.id == session_id, ChatSession.user_id == user.user.id).first()
+    if not chat_session:
+        raise HTTPException(status_code=404, detail="Chat session not found")
+    
+    # Update the title
+    chat_session.title = title_request.title
+    db.commit()
+    db.refresh(chat_session)
+    
+    return chat_session
+
+# route to delete a chat session and all its messages
+@router.delete("/sessions/{session_id}", response_model=dict)
+async def delete_chat_session(
+    session_id: UUID, 
+    user=Depends(verify_jwt), 
+    db: Session = Depends(get_db)
+):
+    # Retrieve the chat session and verify the user
+    chat_session = db.query(ChatSession).filter(ChatSession.id == session_id, ChatSession.user_id == user.user.id).first()
+    if not chat_session:
+        raise HTTPException(status_code=404, detail="Chat session not found")
+    
+    # Delete all messages associated with the chat session
+    db.query(Message).filter(Message.chat_session_id == session_id).delete()
+    
+    # Delete the chat session
+    db.delete(chat_session)
+    db.commit()
+    
+    return {"detail": "Chat session and its messages have been deleted"}
+
+# route to empty chat session and messages table (only used via curl / Postman or any API tool)
+@router.delete("/empty-sessions", response_model=dict)
+async def empty_chat_sessions_and_messages(
+    db: Session = Depends(get_db)
+):
+    # Delete all messages from the database
+    db.query(Message).delete()
+    
+    # Delete all chat sessions from the database
+    db.query(ChatSession).delete()
+    
+    db.commit()
+    
+    return {"detail": "All chat sessions and messages have been deleted"}
