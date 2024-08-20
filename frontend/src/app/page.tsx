@@ -1,7 +1,7 @@
 'use client';
 
 import ChatSection from '@/components/chat/Section';
-import { useAuth } from './context/AuthContext';
+import { useAuth } from '@/context/AuthContext';
 
 export default function Home() {
   const { user } = useAuth();

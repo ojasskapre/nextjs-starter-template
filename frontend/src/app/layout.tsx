@@ -5,7 +5,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
-import { AuthProvider, useAuth } from '@/app/context/AuthContext';
+import { AuthProvider, useAuth } from '@/context/AuthContext';
 import { Loader2 } from 'lucide-react';
 import { Toaster } from '@/components/ui/toaster';
 

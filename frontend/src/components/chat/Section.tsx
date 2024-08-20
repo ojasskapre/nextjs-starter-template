@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import ChatMessages from './Messages';
 import MessageInput from './MessageInput';
 import EmptyScreen from './EmptyScreen';
-import { useAuth } from '@/app/context/AuthContext';
+import { useAuth } from '@/context/AuthContext';
 import { useEffect, useState } from 'react';
 import { fetchMessagesForSession } from '@/utils/api';
 import { Message } from 'ai';
