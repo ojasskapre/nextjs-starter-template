@@ -1,17 +1,42 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/app/context/AuthContext';
-import { PanelRightOpen, PanelRightClose } from 'lucide-react';
+import { PanelRightOpen, PanelRightClose, CirclePlus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
+import { Separator } from '@/components/ui/separator';
+import { getAllChatSessions } from '@/services/chatService';
+import { IChatSession } from '@/types/chat.interface';
+import ChatSessionsList from '@/components/chat/SessionsList';
 
 const Sidebar: React.FC = () => {
-  const { user } = useAuth();
+  const { user, getToken } = useAuth();
   const [isOpen, setIsOpen] = useState(true);
+  const [chatSessions, setChatSessions] = useState<IChatSession[]>([]);
 
   if (!user) return null;
+
+  useEffect(() => {
+    async function fetchChatSessions() {
+      try {
+        const token = await getToken();
+        if (token) {
+          const sessions = await getAllChatSessions(token);
+          setChatSessions(sessions);
+        } else {
+          throw new Error('token not available');
+        }
+      } catch (error) {
+        console.error('Failed to fetch chat sessions:', error);
+      }
+    }
+
+    if (user) {
+      fetchChatSessions();
+    }
+  }, []);
 
   return (
     <div
@@ -50,8 +75,19 @@ const Sidebar: React.FC = () => {
               <PanelRightOpen className="w-6 h-6" />
             </Button>
           </div>
-          {/* Add contents for sidebar here */}
-          <div className="flex-grow">{/* Your sidebar content */}</div>
+          <div className="flex flex-col h-[calc(100vh-72px)]">
+            <Button
+              variant="outline"
+              className="flex justify-start space-x-2 items-center w-full"
+            >
+              <CirclePlus className="mr-2" />
+              <span>New Chat</span>
+            </Button>
+            <Separator className="my-4" />
+
+            {/* Display all chat sessions here */}
+            <ChatSessionsList chatSessions={chatSessions} />
+          </div>
         </Card>
       )}
     </div>
