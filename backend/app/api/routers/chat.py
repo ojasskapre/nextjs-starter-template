@@ -54,6 +54,9 @@ async def continue_chat(session_id: UUID, chat_request: ChatRequest, user=Depend
     if not chat_session:
         raise HTTPException(status_code=404, detail="Chat session not found")
 
+    # Update the updated_at timestamp
+    chat_session.updated_at = datetime.utcnow()
+
     # Add the user's new message to the session
     message = Message(
         chat_session_id=chat_session.id,
