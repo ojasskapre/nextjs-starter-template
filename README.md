@@ -151,8 +151,4 @@ Steps to implement:
 ## To-Do Features Checklist
 
 - [ ] **Regenerate Answer**: Allow users to regenerate the AI's response.
-- [ ] **Stop Answer Streaming**: Allow users to stop the streaming of the AI's response mid-answer.
-- [ ] **Create New Chat**: Enable users to start a new chat session.
-- [ ] **Save Chat History**: Save the chat history for users to access later.
-- [ ] **Access Previous Chats**: Allow users to go back to any previous chat and continue the conversation.
 - [ ] **Add Attachments**: Allow users to add attachments to their messages.
