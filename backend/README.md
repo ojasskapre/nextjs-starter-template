@@ -165,6 +165,58 @@ The messages table stores the messages exchanged during a chat session.
   ]
   ```
 
+#### Update Chat Session Title
+
+- Endpoint: `/api/sessions/{session_id}/title` [PATCH]
+- Authenticated request
+- Description: Updates the title of an existing chat session.
+- Request Parameters:
+  session_id: The UUID of the chat session.
+- Request:
+  ```json
+  {
+    "title": "New Chat Title"
+  }
+  ```
+- Response: The updated chat session object.
+  ```json
+  {
+    "id": "uuid",
+    "title": "New Chat Title",
+    "user_id": "user-uuid",
+    "created_at": "timestamp",
+    "updated_at": "timestamp"
+  }
+  ```
+
+#### Delete a Chat Session
+
+- Endpoint: `/api/sessions/{session_id}` [DELETE]
+- Authenticated request
+- Description: Deletes a specific chat session along with all its messages.
+- Request Parameters:
+
+  session_id: The UUID of the chat session.
+
+- Response:
+  ```json
+  {
+    "detail": "Chat session and its messages have been deleted"
+  }
+  ```
+
+#### Empty All Chat Sessions and Messages
+
+- Endpoint: `/api/empty-sessions` [DELETE]
+- Authenticated request (should be used via tools like Postman or curl)
+- Description: Deletes all chat sessions and their associated messages from the database.
+- Response:
+  ```json
+  {
+    "detail": "All chat sessions and messages have been deleted"
+  }
+  ```
+
 ## Installation Guide
 
 #### Prerequisites
