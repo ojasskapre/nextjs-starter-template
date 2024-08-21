@@ -18,9 +18,6 @@ import {
 
 const Navbar = () => {
   const { user, logout } = useAuth();
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-
-  const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
 
   return (
     <nav className="flex justify-between items-center p-4 bg-primary text-foreground">
