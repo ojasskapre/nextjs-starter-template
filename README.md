@@ -8,6 +8,10 @@ This project is a chatbot application built using Next.js, TypeScript, Supabase,
 
 - **Real-time Chat**: Users can send messages and receive responses from the AI in real-time.
 - **User Authentication**: Sign up and log in functionality using Supabase.
+- **Stop Answer Streaming**: Allow users to stop the streaming of the AI's response mid-answer.
+- **Create New Chat**: Enable users to start a new chat session.
+- **Save Chat History**: Save the chat history for users to access later.
+- **Access Previous Chats**: Allow users to go back to any previous chat and continue the conversation.
 - **Markdown Support**: Messages can include Markdown formatting, including LaTeX for mathematical expressions.
 - **Backend API**: FastAPI backend to handle chat processing and interactions with OpenAI's GPT-3.5 model.
 
