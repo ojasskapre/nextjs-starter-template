@@ -71,8 +71,7 @@ async def continue_chat(session_id: UUID, chat_request: ChatRequest, user=Depend
 # route to get all chat sessions
 @router.get("/sessions", response_model=list[ChatSessionResponse])
 async def get_all_chat_sessions(user=Depends(verify_jwt), db: Session = Depends(get_db)):
-    print(user.user.id)
-    chat_sessions = db.query(ChatSession).filter(ChatSession.user_id == user.user.id).order_by(ChatSession.created_at.desc()).all()
+    chat_sessions = db.query(ChatSession).filter(ChatSession.user_id == user.user.id).order_by(ChatSession.updated_at.desc()).all()
     return chat_sessions
 
 # route to update title for a chat sessions
