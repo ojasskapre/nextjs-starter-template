@@ -132,6 +132,20 @@ This project is a chatbot application built using Next.js, TypeScript, Supabase,
 
 6. The FastAPI server will be running at `http://127.0.0.1:8000`.
 
+#### Running the Application using Docker Compose
+
+1. Make sure you have Docker and Docker Compose installed on your system.
+2. Ensure that you have set up the environment variables in the `.env` file in the `frontend` and `backend` directory.
+3. Run the following command to start the application:
+
+   ```bash
+   docker compose up --build
+   ```
+
+4. The application will be running at `http://localhost:3000`.
+5. The FastAPI server will be running at `http://localhost:8000`.
+6. Remember to stop the containers using `docker compose down` when you are done.
+
 #### Alternative Setup (Not using FastAPI)
 
 Instead of using FastAPI to handle and respond to chat queries, you can opt to handle everything directly in the Next.js frontend by leveraging `langchain.js`, `@langchain/openai`. This approach simplifies the architecture by keeping everything within the frontend, which can be useful for specific use cases.

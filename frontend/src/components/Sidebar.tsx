@@ -20,7 +20,6 @@ import { useChatSession } from '@/context/ChatSessionContext';
 
 const Sidebar: React.FC = () => {
   const { user } = useAuth();
-  if (!user) return null;
 
   const [isOpen, setIsOpen] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -43,6 +42,8 @@ const Sidebar: React.FC = () => {
     };
     fetchSessions();
   }, [refreshChatSessions]);
+
+  if (!user) return null;
 
   return (
     <div

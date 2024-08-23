@@ -103,11 +103,6 @@ instance/
 .pytest_cache/
 .cache/
 
-# Docker
-docker-compose.yml
-.dockerignore
-Dockerfile
-
 # Editor settings
 .vscode/
 .idea/

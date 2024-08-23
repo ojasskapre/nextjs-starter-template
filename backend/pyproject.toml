@@ -18,7 +18,7 @@ langchain-community = "^0.2.12"
 python-dotenv = "^1.0.1"
 supabase = "^2.7.2"
 sqlalchemy = "^2.0.32"
-psycopg2 = "^2.9.9"
+psycopg2-binary = "^2.9.9"
 
 [tool.poetry.group.dev.dependencies]
 fastapi = "^0.112.1"

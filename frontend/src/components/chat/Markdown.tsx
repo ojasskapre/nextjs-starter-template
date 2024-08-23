@@ -47,4 +47,6 @@ const MemoizedReactMarkdown: FC<{ content: string }> = memo(
   (prevProps, nextProps) => prevProps.content === nextProps.content
 );
 
+MemoizedReactMarkdown.displayName = 'MemoizedReactMarkdown';
+
 export default MemoizedReactMarkdown;
