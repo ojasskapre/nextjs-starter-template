@@ -29,20 +29,6 @@ const Sidebar: React.FC = () => {
   const { chatSessions, setChatSessions, refreshChatSessions } =
     useChatSession();
 
-  useEffect(() => {
-    const fetchSessions = async () => {
-      setIsLoading(true);
-      try {
-        await refreshChatSessions();
-      } catch (err) {
-        setError('Failed to fetch chat sessions');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchSessions();
-  }, [refreshChatSessions]);
-
   if (!user) return null;
 
   return (

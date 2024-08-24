@@ -1,4 +1,12 @@
-import React, { createContext, useState, useContext, useCallback } from 'react';
+'use client';
+
+import React, {
+  createContext,
+  useState,
+  useContext,
+  useEffect,
+  useCallback,
+} from 'react';
 import { IChatSession } from '@/types/chat.interface';
 import { getAllChatSessions } from '@/utils/api';
 import { useAuth } from '@/context/AuthContext';
@@ -18,6 +26,17 @@ export const ChatSessionProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const { getToken } = useAuth();
   const [chatSessions, setChatSessions] = useState<IChatSession[]>([]);
+
+  useEffect(() => {
+    const fetchChatSessions = async () => {
+      const token = await getToken();
+      if (token) {
+        const sessions = await getAllChatSessions(token);
+        setChatSessions(sessions);
+      }
+    };
+    fetchChatSessions();
+  }, []);
 
   const refreshChatSessions = useCallback(async () => {
     const token = await getToken();
