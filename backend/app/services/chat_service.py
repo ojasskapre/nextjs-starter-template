@@ -13,13 +13,13 @@ User: {input}
 AI:
 """
 
-async def process_chat(messages, db: Session, chat_session_id: UUID):
+async def process_chat(model_id: str, messages, db: Session, chat_session_id: UUID):
     current_message_content = messages[-1].content
     prompt = ChatPromptTemplate.from_template(TEMPLATE)
     
     model = ChatOpenAI(
         temperature=0.8,
-        model='gpt-3.5-turbo-0125',
+        model=model_id,
         streaming=True
     )
     
@@ -36,16 +36,16 @@ async def process_chat(messages, db: Session, chat_session_id: UUID):
 
                 # Stream the chunk to the client
                 yield chunk
-            
-            # Save the accumulated full response to the database
-            db.add(Message(
-                chat_session_id=chat_session_id,
-                role="assistant",
-                content=full_response
-            ))
-            db.commit()
-
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))
+        finally:
+            # Save the accumulated response to the database even if streaming was interrupted
+            if full_response:
+                db.add(Message(
+                    chat_session_id=chat_session_id,
+                    role="assistant",
+                    content=full_response
+                ))
+                db.commit()
 
     return StreamingResponse(generate_chat_responses(), media_type="text/event-stream")

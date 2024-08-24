@@ -12,13 +12,15 @@ router = APIRouter()
 
 # route to start initial conversation
 @router.post("/chat", response_model=ChatResponse)
-async def start_chat(chatRequest: ChatRequest, user = Depends(verify_jwt), db: Session = Depends(get_db)):
+async def start_chat(chat_request: ChatRequest, user = Depends(verify_jwt), db: Session = Depends(get_db)):
     # Generate the title with the current timestamp
     current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     title = f"New Chat - {current_time}"
+
+    model_id = chat_request.model
     
     # Create a new chat session
-    chat_session = ChatSession(id=chatRequest.sessionId, user_id=user.user.id, title=title)
+    chat_session = ChatSession(id=chat_request.sessionId, user_id=user.user.id, title=title)
     db.add(chat_session)
     db.commit()
     db.refresh(chat_session)
@@ -27,12 +29,12 @@ async def start_chat(chatRequest: ChatRequest, user = Depends(verify_jwt), db: S
     message = Message(
         chat_session_id=chat_session.id,
         role="user",
-        content=chatRequest.messages[-1].content
+        content=chat_request.messages[-1].content
     )
     db.add(message)
     db.commit()
 
-    return await process_chat(chatRequest.messages, db, chat_session.id)
+    return await process_chat(model_id, chat_request.messages, db, chat_session.id)
 
 # route to get all messages of a session
 @router.get("/sessions/{session_id}", response_model=list[MessageResponse])
@@ -49,6 +51,8 @@ async def get_chat_history(session_id: UUID, user=Depends(verify_jwt), db: Sessi
 # route to post a message to existing session
 @router.post("/sessions/{session_id}", response_model=ChatResponse)
 async def continue_chat(session_id: UUID, chat_request: ChatRequest, user=Depends(verify_jwt), db: Session = Depends(get_db)):
+    model_id = chat_request.model
+
     # Verify the session belongs to the user
     chat_session = db.query(ChatSession).filter(ChatSession.id == session_id, ChatSession.user_id == user.user.id).first()
     if not chat_session:
@@ -66,7 +70,7 @@ async def continue_chat(session_id: UUID, chat_request: ChatRequest, user=Depend
     db.add(message)
     db.commit()
 
-    return await process_chat(chat_request.messages, db, session_id)
+    return await process_chat(model_id, chat_request.messages, db, session_id)
 
 # route to get all chat sessions
 @router.get("/sessions", response_model=list[ChatSessionResponse])

@@ -32,6 +32,7 @@ class ChatMessage(BaseModel):
 
 class ChatRequest(BaseModel):
     sessionId: Optional[UUID]
+    model: str
     messages: List[ChatMessage]
 
 class ChatResponse(BaseModel):
