@@ -3,8 +3,11 @@
 import { Check, Copy, Download } from 'lucide-react';
 import { FC, memo } from 'react';
 import { Prism, SyntaxHighlighterProps } from 'react-syntax-highlighter';
-import { coldarkDark } from 'react-syntax-highlighter/dist/cjs/styles/prism';
-
+import {
+  coldarkDark,
+  coldarkCold,
+} from 'react-syntax-highlighter/dist/cjs/styles/prism';
+import { useTheme } from 'next-themes';
 import { useCopyToClipboard } from './hooks/useCopyToClipboard';
 
 // TODO: Remove this when @type/react-syntax-highlighter is updated
@@ -58,6 +61,8 @@ export const generateRandomString = (length: number, lowercase = false) => {
 const CodeBlock: FC<Props> = memo(({ language, value }) => {
   const { isCopied, copyToClipboard } = useCopyToClipboard({ timeout: 2000 });
 
+  const { theme } = useTheme();
+
   const downloadAsFile = () => {
     if (typeof window === 'undefined') {
       return;
@@ -92,20 +97,20 @@ const CodeBlock: FC<Props> = memo(({ language, value }) => {
   };
 
   return (
-    <div className="codeblock relative w-full bg-zinc-950 font-sans">
-      <div className="flex w-full items-center justify-between bg-zinc-800 px-6 py-2 pr-4 text-zinc-100">
+    <div className="codeblock relative w-full bg-neutral-200 dark:bg-neutral-800 font-sans">
+      <div className="flex w-full items-center justify-between bg-neutral-100 dark:bg-neutral-900 px-6 py-2 pr-4 text-neutral-900 dark:text-neutral-100">
         <span className="text-xs lowercase">{language}</span>
         <div className="flex items-center space-x-1">
           <button
             onClick={downloadAsFile}
-            className="p-2 rounded-full bg-zinc-700 text-zinc-100 hover:bg-zinc-600 transition duration-150 ease-in-out"
+            className="p-2 rounded-full bg-neutral-200 dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100 hover:bg-neutral-300 hover:dark:bg-neutral-600 transition duration-150 ease-in-out"
           >
             <Download className="h-4 w-4" />
             <span className="sr-only">Download</span>
           </button>
           <button
             onClick={onCopy}
-            className="p-2 rounded-full bg-zinc-700 text-zinc-100 hover:bg-zinc-600 transition duration-150 ease-in-out"
+            className="p-2 rounded-full bg-neutral-200 dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100 hover:bg-neutral-300 hover:dark:bg-neutral-600 transition duration-150 ease-in-out"
           >
             {isCopied ? (
               <Check className="h-4 w-4" />
@@ -118,7 +123,7 @@ const CodeBlock: FC<Props> = memo(({ language, value }) => {
       </div>
       <SyntaxHighlighter
         language={language}
-        style={coldarkDark}
+        style={theme === 'dark' ? coldarkDark : coldarkCold}
         PreTag="div"
         showLineNumbers
         customStyle={{

@@ -11,9 +11,11 @@ export default function ChatMessage({ chatMessage }: { chatMessage: Message }) {
 
   return (
     <Card className="flex items-start gap-4 p-4 rounded-lg shadow-lg">
-      <ChatAvatar role={chatMessage.role} />
-      <CardContent className="group flex flex-1 flex-grow justify-between gap-2">
-        <Markdown content={chatMessage.content} />
+      <CardContent className="group flex flex-1 gap-4 px-0">
+        <ChatAvatar role={chatMessage.role} />
+        <div className="flex-1 max-w-[760px] break-words overflow-hidden">
+          <Markdown content={chatMessage.content} />
+        </div>
         <Button
           onClick={() => copyToClipboard(chatMessage.content)}
           variant="outline"
