@@ -24,6 +24,9 @@ const Sidebar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
+    null
+  );
 
   const router = useRouter();
   const { chatSessions, setChatSessions, refreshChatSessions } =
@@ -73,6 +76,7 @@ const Sidebar: React.FC = () => {
               variant="outline"
               className="flex justify-start space-x-2 items-center w-full"
               onClick={() => {
+                setSelectedSessionId(null);
                 router.push('/');
               }}
             >
@@ -89,6 +93,8 @@ const Sidebar: React.FC = () => {
             )}
             {!isLoading && !error && (
               <ChatSessionsList
+                selectedSessionId={selectedSessionId}
+                setSelectedSessionId={setSelectedSessionId}
                 chatSessions={chatSessions}
                 setChatSessions={setChatSessions}
               />

@@ -39,11 +39,15 @@ import { updateChatSessionTitle, deleteChatSession } from '@/utils/api';
 import { cn } from '@/lib/utils';
 
 interface ChatSessionsListProps {
+  selectedSessionId: string | null;
+  setSelectedSessionId: Dispatch<SetStateAction<string | null>>;
   chatSessions: IChatSession[];
   setChatSessions: Dispatch<SetStateAction<IChatSession[]>>;
 }
 
 const ChatSessionsList: React.FC<ChatSessionsListProps> = ({
+  selectedSessionId,
+  setSelectedSessionId,
   chatSessions,
   setChatSessions,
 }) => {
@@ -53,9 +57,7 @@ const ChatSessionsList: React.FC<ChatSessionsListProps> = ({
   const { toast } = useToast();
 
   const [loading, setLoading] = useState<string | null>(null);
-  const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
-    null
-  );
+  const [selectedDeleteId, setSelectedDeleteId] = useState<string | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [editingSessionId, setEditingSessionId] = useState<string | null>(null);
   const [newTitle, setNewTitle] = useState<string>('');
@@ -74,21 +76,22 @@ const ChatSessionsList: React.FC<ChatSessionsListProps> = ({
   const handleSessionClick = (sessionId: string) => {
     // avoid on click if the session is currently being edited
     if (editingSessionId !== sessionId) {
+      setSelectedSessionId(sessionId);
       router.push(`/chat/${sessionId}`);
     }
   };
 
   const handleDelete = async () => {
-    if (!selectedSessionId) return;
+    if (!selectedDeleteId) return;
 
-    setLoading(selectedSessionId);
+    setLoading(selectedDeleteId);
 
     try {
       const token = await getToken();
-      await deleteChatSession(selectedSessionId, token!);
+      await deleteChatSession(selectedDeleteId, token!);
       // Update the UI by removing the deleted session
       setChatSessions((prevSessions) =>
-        prevSessions.filter((session) => session.id !== selectedSessionId)
+        prevSessions.filter((session) => session.id !== selectedDeleteId)
       );
       // navigate to home page after deletion
       router.push('/');
@@ -103,8 +106,9 @@ const ChatSessionsList: React.FC<ChatSessionsListProps> = ({
       });
     } finally {
       setLoading(null);
-      setSelectedSessionId(null);
+      setSelectedDeleteId(null);
       setIsDialogOpen(false);
+      setSelectedSessionId(null);
     }
   };
 
@@ -133,6 +137,9 @@ const ChatSessionsList: React.FC<ChatSessionsListProps> = ({
       setEditingSessionId(null);
     } catch (err) {
       toast({
+        className: cn(
+          'top-0 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4'
+        ),
         variant: 'destructive',
         title: 'Uh oh! Something went wrong.',
         description: 'Failed to update session title.',
@@ -147,7 +154,7 @@ const ChatSessionsList: React.FC<ChatSessionsListProps> = ({
   };
 
   const openDeleteDialog = (sessionId: string) => {
-    setSelectedSessionId(sessionId);
+    setSelectedDeleteId(sessionId);
     setIsDialogOpen(true);
   };
 
@@ -160,10 +167,14 @@ const ChatSessionsList: React.FC<ChatSessionsListProps> = ({
       {chatSessions.map((session) => (
         <Card
           key={session.id}
-          className="hover:bg-neutral-100 hover:dark:bg-neutral-800 cursor-pointer"
+          className={cn(
+            'hover:bg-neutral-200 hover:dark:bg-neutral-700 cursor-pointer',
+            session.id === selectedSessionId &&
+              'bg-neutral-100 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700'
+          )}
           onClick={() => handleSessionClick(session.id)}
         >
-          <CardContent className="p-2 flex items-center justify-between">
+          <CardContent className={cn('p-2 flex items-center justify-between')}>
             {editingSessionId === session.id ? (
               <input
                 ref={renameInputRef}
@@ -213,10 +224,6 @@ const ChatSessionsList: React.FC<ChatSessionsListProps> = ({
                 className="dark:bg-neutral-900 p-2"
                 onCloseAutoFocus={(e) => e.preventDefault()}
               >
-                <DropdownMenuItem className="cursor-pointer hover:bg-neutral-300 hover:dark:bg-neutral-100 p-4 rounded-xl">
-                  <Share className="w-4 h-4 mr-2" />
-                  Share
-                </DropdownMenuItem>
                 <DropdownMenuItem
                   className="cursor-pointer hover:bg-neutral-300 hover:dark:bg-neutral-100 p-4 rounded-xl"
                   onClick={(e) => {
@@ -263,9 +270,9 @@ const ChatSessionsList: React.FC<ChatSessionsListProps> = ({
             <Button
               variant="destructive"
               onClick={handleDelete}
-              disabled={loading === selectedSessionId}
+              disabled={loading === selectedDeleteId}
             >
-              {loading === selectedSessionId ? 'Deleting...' : 'Delete'}
+              {loading === selectedDeleteId ? 'Deleting...' : 'Delete'}
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>
