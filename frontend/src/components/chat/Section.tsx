@@ -13,6 +13,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Loader2, AlertCircle } from 'lucide-react';
 import { useChatSession } from '@/context/ChatSessionContext';
+import { ILLMModel } from '@/types/chat.interface';
 
 type ChatSectionProps = {
   sessionId?: string;
@@ -27,6 +28,12 @@ export default function ChatSection({ sessionId }: ChatSectionProps) {
   );
   const [fetchLoading, setFetchLoading] = useState(!!sessionId);
   const [fetchError, setFetchError] = useState('');
+
+  const defaultModel: ILLMModel = {
+    id: 'gpt-3.5-turbo-0125',
+    name: 'GPT-3.5 Turbo',
+  };
+  const [model, setModel] = useState<ILLMModel>(defaultModel);
 
   const router = useRouter();
   const { refreshChatSessions } = useChatSession();
@@ -82,7 +89,7 @@ export default function ChatSection({ sessionId }: ChatSectionProps) {
     headers,
     initialMessages: initialMessages,
     streamProtocol: 'text',
-    body: { sessionId: currentSessionId },
+    body: { sessionId: currentSessionId, model: model.id },
     onFinish: () => {
       // Route to the new session page only after the first message is sent
       if (!sessionId) {
@@ -113,6 +120,8 @@ export default function ChatSection({ sessionId }: ChatSectionProps) {
               handleSubmit={handleSubmit}
               handleInputChange={handleInputChange}
               setInput={setInput}
+              model={model}
+              setModel={setModel}
               stop={stop}
             />
           </>

@@ -32,3 +32,8 @@ export interface IChatSession {
   created_at: string;
   updated_at: string;
 }
+
+export interface ILLMModel {
+  id: string;
+  name: string;
+}

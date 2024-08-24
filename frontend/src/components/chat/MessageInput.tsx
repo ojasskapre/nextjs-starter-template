@@ -1,7 +1,22 @@
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { ArrowUp, X } from 'lucide-react';
-import { ChatHandler } from '@/types/chat.interface';
+import { ChatHandler, ILLMModel } from '@/types/chat.interface';
+import ModelsDropdown from './ModelsDropdown';
+
+interface MessageInputProps
+  extends Pick<
+    ChatHandler,
+    | 'isLoading'
+    | 'input'
+    | 'handleSubmit'
+    | 'handleInputChange'
+    | 'setInput'
+    | 'stop'
+  > {
+  model: ILLMModel;
+  setModel: React.Dispatch<React.SetStateAction<ILLMModel>>;
+}
 
 export default function MessageInput({
   isLoading,
@@ -10,15 +25,9 @@ export default function MessageInput({
   handleInputChange,
   setInput,
   stop,
-}: Pick<
-  ChatHandler,
-  | 'isLoading'
-  | 'input'
-  | 'handleSubmit'
-  | 'handleInputChange'
-  | 'setInput'
-  | 'stop'
->) {
+  model,
+  setModel,
+}: MessageInputProps) {
   const onSubmit = (
     e:
       | React.FormEvent<HTMLFormElement>
@@ -40,43 +49,46 @@ export default function MessageInput({
 
   return (
     <form onSubmit={onSubmit}>
-      <div
-        className={cn(
-          'flex items-center bg-neutral-50 dark:bg-neutral-800 p-3 max-w-4xl mx-auto',
-          input.split('\n').length <= 1 ? 'rounded-full' : 'rounded-3xl'
-        )}
-      >
+      <div className="bg-neutral-50 dark:bg-neutral-800 p-3 rounded-xl max-w-4xl mx-auto space-y-2">
+        {/* Textarea for message input */}
         <textarea
           value={input}
           onChange={handleInputChange}
-          placeholder="Message Bot"
-          className="flex-1 bg-transparent p-2 outline-none resize-none"
-          rows={Math.min(input.split('\n').length, 10)}
+          placeholder="Ask anything..."
+          className="w-full bg-transparent p-2 outline-none resize-none"
+          rows={Math.min(input.split('\n').length, 8)}
           disabled={isLoading}
           onKeyDown={handleKeyDown}
         />
-        {/* If response is being streamed i.e. is loading, then show stop streaming icon button */}
-        {!isLoading ? (
-          <Button
-            variant="outline"
-            size="icon"
-            disabled={!input.trim()}
-            type="submit"
-            className="rounded-full"
-          >
-            <ArrowUp />
-          </Button>
-        ) : (
-          <Button
-            variant="outline"
-            size="icon"
-            type="button"
-            className="rounded-full"
-            onClick={stop}
-          >
-            <X />
-          </Button>
-        )}
+
+        {/* Bottom section with options and submit */}
+        <div className="flex items-center justify-between">
+          {/* Model Dropdown */}
+          <ModelsDropdown model={model} setModel={setModel} />
+
+          {/* Submit or stop button */}
+          {!isLoading ? (
+            <Button
+              variant="default"
+              size="icon"
+              disabled={!input.trim()}
+              type="submit"
+              className="rounded-full"
+            >
+              <ArrowUp />
+            </Button>
+          ) : (
+            <Button
+              variant="default"
+              size="icon"
+              type="button"
+              className="rounded-full"
+              onClick={stop}
+            >
+              <X />
+            </Button>
+          )}
+        </div>
       </div>
     </form>
   );
