@@ -9,11 +9,15 @@ import { AuthProvider, useAuth } from '@/context/AuthContext';
 import { Loader2 } from 'lucide-react';
 import { Toaster } from '@/components/ui/toaster';
 import { ChatSessionProvider } from '@/context/ChatSessionContext';
+import { usePathname } from 'next/navigation';
+import { cn } from '@/lib/utils';
 
 const inter = Inter({ subsets: ['latin'] });
 
 function LayoutContent({ children }: { children: React.ReactNode }) {
-  const { loading } = useAuth();
+  const { loading, user } = useAuth();
+  const pathname = usePathname();
+  const shouldShowSidebarAndNavbar = !(pathname === '/' && !user);
 
   if (loading) {
     return (
@@ -26,10 +30,18 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
   return (
     <ChatSessionProvider>
       <div className="flex flex-grow h-screen">
-        <Sidebar />
-        <main className="flex flex-grow flex-col">
-          <Navbar />
-          <div className="p-4 h-[calc(100vh-72px)]">{children}</div>
+        {shouldShowSidebarAndNavbar && <Sidebar />}
+        <main className="flex flex-grow flex-col max-w-full">
+          {shouldShowSidebarAndNavbar && <Navbar />}
+          <div
+            className={cn(
+              shouldShowSidebarAndNavbar
+                ? 'min-h-[calc(100vh-72px)]'
+                : 'min-h-[100vh]'
+            )}
+          >
+            {children}
+          </div>
         </main>
       </div>
     </ChatSessionProvider>

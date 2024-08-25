@@ -35,16 +35,16 @@ export default function ChatMessages({
 
   return (
     <div
-      className="flex-1 w-full p-4 relative overflow-y-auto scroll-smooth"
+      className="flex-1 w-full px-2 md:px-4 relative overflow-y-auto scroll-smooth"
       ref={scrollableChatContainerRef}
     >
-      <div className="flex flex-col gap-5 max-w-4xl mx-auto">
+      <div className="flex flex-col gap-2 md:gap-4 lg:gap-5 max-w-4xl mx-auto">
         {messages.map((m, i) => {
           return <ChatMessage key={m.id} chatMessage={m} />;
         })}
         {isPending && (
           <div className="flex justify-center items-center pt-10">
-            <Loader2 className="h-6 w-6 animate-spin" />
+            <Loader2 className="h-6 w-6 animate-spin text-blue-500" />
           </div>
         )}
       </div>

@@ -49,7 +49,7 @@ export default function MessageInput({
 
   return (
     <form onSubmit={onSubmit}>
-      <div className="bg-neutral-50 dark:bg-neutral-800 p-3 rounded-xl max-w-4xl mx-auto space-y-2">
+      <div className="bg-neutral-50 dark:bg-neutral-800 p-3 rounded-xl max-w-4xl my-4 mx-4 md:mx-8 lg:mx-auto space-y-2">
         {/* Textarea for message input */}
         <textarea
           value={input}

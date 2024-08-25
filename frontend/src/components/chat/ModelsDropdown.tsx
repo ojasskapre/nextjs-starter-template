@@ -38,7 +38,7 @@ export default function ModelDropdown({
         <Button
           variant="ghost"
           size="sm"
-          className="rounded-full border border-indigo-500 bg-indigo-600/20"
+          className="rounded-full border border-blue-500 bg-blue-600/20"
         >
           {model.name}
         </Button>

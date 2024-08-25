@@ -100,11 +100,11 @@ export default function ChatSection({ sessionId }: ChatSectionProps) {
   });
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col overflow-y-auto">
       <div className="space-y-4 w-full h-full flex flex-col">
         {fetchLoading && (
           <div className="flex justify-center items-center pt-10">
-            <Loader2 className="h-6 w-6 animate-spin" />
+            <Loader2 className="h-6 w-6 animate-spin text-blue-500" />
           </div>
         )}
         {!fetchLoading && !fetchError && (

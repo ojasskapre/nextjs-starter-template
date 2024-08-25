@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import Link from 'next/link';
-import { LogOut } from 'lucide-react';
+import { LogOut, Menu } from 'lucide-react';
 import ThemeModeToggle from './ThemeModeToggle';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -15,16 +15,71 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { cn } from '@/lib/utils';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
 
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
     <nav className="flex justify-between items-center p-4 bg-primary text-foreground">
-      <Link href="/">
-        <div className="text-2xl font-bold ml-16">Next.js Starter Template</div>
-      </Link>
-      <div className="flex items-center">
+      <div className="flex items-center justify-between w-full sm:w-auto">
+        {!user && (
+          <Link href="/">
+            <div className="text-2xl font-bold ml-4 sm:ml-16">
+              LLM App Template
+            </div>
+          </Link>
+        )}
+        {!user && (
+          <div>
+            <ThemeModeToggle />
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  className="sm:hidden ml-auto p-2"
+                  onClick={toggleMenu}
+                  aria-label="Toggle menu"
+                >
+                  <Menu className="h-6 w-6 text-foreground" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56 mr-2 sm:hidden">
+                {!user && (
+                  <>
+                    <DropdownMenuItem asChild>
+                      <Link href="/signup">
+                        <Button variant="outline" className="w-full">
+                          Sign Up
+                        </Button>
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href="/login">
+                        <Button variant="default" className="w-full">
+                          Sign In
+                        </Button>
+                      </Link>
+                    </DropdownMenuItem>
+                  </>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        )}
+      </div>
+
+      <div
+        className={cn(
+          'items-center space-x-4',
+          user ? 'flex' : 'hidden sm:flex'
+        )}
+      >
         <ThemeModeToggle />
         {user ? (
           <>

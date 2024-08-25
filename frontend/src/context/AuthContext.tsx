@@ -8,6 +8,7 @@ import {
   ReactNode,
 } from 'react';
 import { createClient } from '@/utils/supabase/client';
+import { useRouter } from 'next/navigation';
 
 type User = {
   email: string;
@@ -25,6 +26,8 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+
+  const router = useRouter();
 
   useEffect(() => {
     const supabase = createClient();
@@ -59,6 +62,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const supabase = createClient();
     await supabase.auth.signOut();
     setUser(null);
+    router.push('/');
   };
 
   const getToken = async () => {

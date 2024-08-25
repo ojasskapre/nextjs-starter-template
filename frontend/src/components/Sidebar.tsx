@@ -22,14 +22,12 @@ const Sidebar: React.FC = () => {
   const { user } = useAuth();
 
   const [isOpen, setIsOpen] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
   const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
     null
   );
 
   const router = useRouter();
-  const { chatSessions, setChatSessions, refreshChatSessions } =
+  const { loading, error, chatSessions, setChatSessions, refreshChatSessions } =
     useChatSession();
 
   if (!user) return null;
@@ -37,8 +35,7 @@ const Sidebar: React.FC = () => {
   return (
     <div
       className={cn(
-        'flex h-full',
-        !isOpen && 'pt-4 pl-4',
+        'flex h-full fixed lg:relative z-40 lg:z-auto top-0 left-0 lg:h-auto',
         isOpen && 'border-r border-neutral-100 dark:border-neutral-900'
       )}
     >
@@ -49,7 +46,7 @@ const Sidebar: React.FC = () => {
             variant="ghost"
             size="icon"
             onClick={() => setIsOpen(!isOpen)}
-            className="ml-2"
+            className="ml-2 mt-4"
           >
             <PanelRightClose className="w-6 h-6" />
           </Button>
@@ -62,7 +59,7 @@ const Sidebar: React.FC = () => {
           )}
         >
           <div className="flex justify-between items-center mb-4">
-            {isOpen && <h2 className="text-lg font-bold">App Name</h2>}
+            {isOpen && <h2 className="text-lg font-bold pl-2">App Name</h2>}
             <Button
               variant="outline"
               size="icon"
@@ -86,12 +83,12 @@ const Sidebar: React.FC = () => {
             <Separator className="my-4" />
 
             {/* Display all chat sessions here */}
-            {isLoading && (
+            {loading && (
               <div className="flex justify-center items-center">
                 <Loader2 className="h-6 w-6 animate-spin" />
               </div>
             )}
-            {!isLoading && !error && (
+            {!loading && !error && (
               <ChatSessionsList
                 selectedSessionId={selectedSessionId}
                 setSelectedSessionId={setSelectedSessionId}

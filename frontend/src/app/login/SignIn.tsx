@@ -65,7 +65,7 @@ const SignIn = () => {
   };
 
   return (
-    <Card className="max-w-md w-full mx-auto p-8">
+    <Card className="max-w-md w-[90%] mx-auto p-8">
       <h2 className="text-3xl font-bold mb-6">Sign In</h2>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSignIn)} className="space-y-6">
