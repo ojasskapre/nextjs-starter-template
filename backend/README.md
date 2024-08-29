@@ -77,24 +77,6 @@ The messages table stores the messages exchanged during a chat session.
 
 ## API Routes
 
-#### Start a New Chat Session
-
-- Endpoint: `/api/chat` [POST]
-- Authenticated request
-- Description: Initiates a new chat session and processes the first user message.
-- Request
-  ```json
-  {
-    "messages": [
-      {
-        "role": "user",
-        "content": "Your message here"
-      }
-    ]
-  }
-  ```
-- Response: The assistant's response is streamed as chunks of data in real-time. The content is sent in plain text, one chunk at a time.
-
 #### Get Chat History
 
 - Endpoint: `/api/sessions/{session_id}` [GET]
@@ -122,7 +104,7 @@ The messages table stores the messages exchanged during a chat session.
   ]
   ```
 
-#### Continue an Existing Chat Session
+#### Start a New Chat Session OR Continue an Existing Chat Session
 
 - Endpoint: `/api/sessions/{session_id}` [POST]
 - Authenticated request

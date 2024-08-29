@@ -35,7 +35,7 @@ async def process_chat(model_id: str, messages, db: Session, chat_session_id: UU
                 full_response += chunk
 
                 # Stream the chunk to the client
-                yield chunk
+                yield f'0:"{chunk}"\n'
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))
         finally:
@@ -48,4 +48,6 @@ async def process_chat(model_id: str, messages, db: Session, chat_session_id: UU
                 ))
                 db.commit()
 
-    return StreamingResponse(generate_chat_responses(), media_type="text/event-stream")
+    response =  StreamingResponse(generate_chat_responses())
+    response.headers["x-vercel-ai-data-stream"] = "v1"
+    return response

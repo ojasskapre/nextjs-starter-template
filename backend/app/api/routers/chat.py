@@ -10,32 +10,6 @@ from datetime import datetime
 
 router = APIRouter()
 
-# route to start initial conversation
-@router.post("/chat", response_model=ChatResponse)
-async def start_chat(chat_request: ChatRequest, user = Depends(verify_jwt), db: Session = Depends(get_db)):
-    # Generate the title with the current timestamp
-    current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    title = f"New Chat - {current_time}"
-
-    model_id = chat_request.model
-    
-    # Create a new chat session
-    chat_session = ChatSession(id=chat_request.sessionId, user_id=user.user.id, title=title)
-    db.add(chat_session)
-    db.commit()
-    db.refresh(chat_session)
-
-    # Add the first message to the session
-    message = Message(
-        chat_session_id=chat_session.id,
-        role="user",
-        content=chat_request.messages[-1].content
-    )
-    db.add(message)
-    db.commit()
-
-    return await process_chat(model_id, chat_request.messages, db, chat_session.id)
-
 # route to get all messages of a session
 @router.get("/sessions/{session_id}", response_model=list[MessageResponse])
 async def get_chat_history(session_id: UUID, user=Depends(verify_jwt), db: Session = Depends(get_db)):
@@ -48,7 +22,7 @@ async def get_chat_history(session_id: UUID, user=Depends(verify_jwt), db: Sessi
     messages = db.query(Message).filter(Message.chat_session_id == session_id).order_by(Message.created_at.asc()).all()
     return messages
 
-# route to post a message to existing session
+# route to post a message to a session or start a new session
 @router.post("/sessions/{session_id}", response_model=ChatResponse)
 async def continue_chat(session_id: UUID, chat_request: ChatRequest, user=Depends(verify_jwt), db: Session = Depends(get_db)):
     model_id = chat_request.model
@@ -56,10 +30,17 @@ async def continue_chat(session_id: UUID, chat_request: ChatRequest, user=Depend
     # Verify the session belongs to the user
     chat_session = db.query(ChatSession).filter(ChatSession.id == session_id, ChatSession.user_id == user.user.id).first()
     if not chat_session:
-        raise HTTPException(status_code=404, detail="Chat session not found")
+        current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        title = f"New Chat - {current_time}"
+        
+        chat_session = ChatSession(id=session_id, user_id=user.user.id, title=title)
+        db.add(chat_session)
+        db.commit()
+        db.refresh(chat_session)
 
     # Update the updated_at timestamp
-    chat_session.updated_at = datetime.utcnow()
+    if chat_session:
+        chat_session.updated_at = datetime.utcnow()
 
     # Add the user's new message to the session
     message = Message(

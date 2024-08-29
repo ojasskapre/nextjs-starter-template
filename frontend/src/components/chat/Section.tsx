@@ -1,7 +1,6 @@
 'use client';
 
 import { useChat } from 'ai/react';
-import { useRouter } from 'next/navigation';
 import ChatMessages from './Messages';
 import MessageInput from './MessageInput';
 import EmptyScreen from './EmptyScreen';
@@ -35,7 +34,6 @@ export default function ChatSection({ sessionId }: ChatSectionProps) {
   };
   const [model, setModel] = useState<ILLMModel>(defaultModel);
 
-  const router = useRouter();
   const { refreshChatSessions } = useChatSession();
 
   useEffect(() => {
@@ -83,17 +81,16 @@ export default function ChatSection({ sessionId }: ChatSectionProps) {
     handleSubmit,
     stop,
   } = useChat({
-    api: sessionId
-      ? `${process.env.NEXT_PUBLIC_CHAT_API}/api/sessions/${sessionId}`
-      : `${process.env.NEXT_PUBLIC_CHAT_API}/api/chat`,
+    api: `${process.env.NEXT_PUBLIC_CHAT_API}/api/sessions/${currentSessionId}`,
     headers,
     initialMessages: initialMessages,
-    streamProtocol: 'text',
+    streamProtocol: 'data',
     body: { sessionId: currentSessionId, model: model.id },
     onFinish: () => {
       // Route to the new session page only after the first message is sent
       if (!sessionId) {
-        router.push(`/chat/${currentSessionId}`);
+        setCurrentSessionId(currentSessionId);
+        window.history.replaceState(null, '', `/chat/${currentSessionId}`);
         refreshChatSessions(); // trigger refresh in sidebar
       }
     },
