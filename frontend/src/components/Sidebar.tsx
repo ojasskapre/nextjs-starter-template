@@ -59,7 +59,11 @@ const Sidebar: React.FC = () => {
           )}
         >
           <div className="flex justify-between items-center mb-4">
-            {isOpen && <h2 className="text-lg font-bold pl-2">App Name</h2>}
+            {isOpen && (
+              <Button variant="ghost" onClick={() => router.push('/')}>
+                <h2 className="text-lg font-bold pl-2">App Name</h2>
+              </Button>
+            )}
             <Button
               variant="outline"
               size="icon"

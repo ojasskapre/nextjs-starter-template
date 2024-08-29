@@ -27,7 +27,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="flex justify-between items-center p-4 bg-primary text-foreground">
+    <nav className="flex justify-between items-center p-4">
       <div className="flex items-center justify-between w-full sm:w-auto">
         {!user && (
           <Link href="/">
@@ -38,7 +38,6 @@ const Navbar = () => {
         )}
         {!user && (
           <div>
-            <ThemeModeToggle />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button
@@ -80,9 +79,9 @@ const Navbar = () => {
           user ? 'flex' : 'hidden sm:flex'
         )}
       >
-        <ThemeModeToggle />
         {user ? (
           <>
+            <ThemeModeToggle />
             {/* User profile Avatar with dropdown showing email and Logout button */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -105,6 +104,7 @@ const Navbar = () => {
           </>
         ) : (
           <>
+            <ThemeModeToggle />
             <Link href="/signup">
               <Button variant="outline" className="ml-4">
                 Sign Up
