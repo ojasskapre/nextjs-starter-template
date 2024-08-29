@@ -1,5 +1,4 @@
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
 import { ArrowUp, X } from 'lucide-react';
 import { ChatHandler, ILLMModel } from '@/types/chat.interface';
 import ModelsDropdown from './ModelsDropdown';

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import {
   PanelRightOpen,
   PanelRightClose,
@@ -20,15 +20,28 @@ import { useChatSession } from '@/context/ChatSessionContext';
 
 const Sidebar: React.FC = () => {
   const { user } = useAuth();
+  const router = useRouter();
+  const pathname = usePathname();
+  const { loading, error, chatSessions, setChatSessions, refreshChatSessions } =
+    useChatSession();
+
+  // Check if the path is in the format /chat/[sessionId]
+  const isChatPath =
+    pathname.startsWith('/chat/') && pathname.split('/').length === 3;
+
+  // Extract sessionId if the path matches
+  const sessionId = isChatPath ? pathname.split('/').pop() : null;
 
   const [isOpen, setIsOpen] = useState(true);
   const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
     null
   );
 
-  const router = useRouter();
-  const { loading, error, chatSessions, setChatSessions, refreshChatSessions } =
-    useChatSession();
+  useEffect(() => {
+    if (sessionId) {
+      setSelectedSessionId(sessionId);
+    }
+  }, [sessionId]);
 
   if (!user) return null;
 
@@ -60,7 +73,13 @@ const Sidebar: React.FC = () => {
         >
           <div className="flex justify-between items-center mb-4">
             {isOpen && (
-              <Button variant="ghost" onClick={() => router.push('/')}>
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  setSelectedSessionId(null);
+                  router.push('/');
+                }}
+              >
                 <h2 className="text-lg font-bold pl-2">App Name</h2>
               </Button>
             )}
